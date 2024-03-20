@@ -8,9 +8,9 @@
 
 ## Descrição
 
-A ideia é ser um gerenciador de patrimônio.
+A ideia é ser um gerenciador de patrimônio (por enquanto).
 
 ## Stack
-- Front: Angular/Vue/React
-- Back: Node.js (Express.js)
+- Front-end: Angular ou Vue
+- Back-end: Node.js (Express.js)
 - DB: MongoDB
