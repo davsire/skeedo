@@ -1,0 +1,11 @@
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(45deg, var(--primary-color) 35%, rgb(99,188,241) 100%);
+}
+
+.login-form {
+  width: min(500px, 80vw);
+}
