@@ -4,13 +4,14 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { ROUTES } from 'src/shared/routes';
 import { LoginComponent } from 'src/views/login/login.component';
 import { RegisterComponent } from 'src/views/register/register.component';
-import { AppComponent } from './app.component';
+import { TemplateComponent } from 'src/views/template/template.component';
 
 const routes: Routes = [
   {
     path: ROUTES.index.path,
-    component: AppComponent,
-    canActivate: [AuthGuard]
+    component: TemplateComponent,
+    canActivate: [AuthGuard],
+    children: [],
   },
   {
     path: ROUTES.login.path,

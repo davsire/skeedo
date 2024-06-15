@@ -1,5 +1,6 @@
-@import "primeng/resources/themes/lara-light-indigo/theme.css";
+@import "bootstrap/dist/css/bootstrap.css" layer(bootstrap);
 @import "primeng/resources/primeng.css";
+@import "primeng/resources/themes/lara-light-indigo/theme.css";
 @import "primeicons/primeicons.css";
 
 body {

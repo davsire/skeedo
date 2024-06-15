@@ -1,0 +1,32 @@
+<ng-container>
+  <nav class="app-navigation p-2 p-sm-3">
+    <p-button icon="pi pi-home"
+              pTooltip="Home"
+              [rounded]="true"
+              styleClass="app-nav-button"
+    ></p-button>
+    <span class="fs-5">Nome legal (ou logo)</span>
+    <div>
+      <p-button icon="pi pi-envelope"
+                pTooltip="Seus convites"
+                tooltipPosition="left"
+                [rounded]="true"
+                styleClass="app-nav-button me-1"
+      ></p-button>
+      <p-button icon="pi pi-user"
+                pTooltip="Seu perfil"
+                tooltipPosition="left"
+                [rounded]="true"
+                styleClass="app-nav-button"
+                (click)="menu.toggle($event)"
+      ></p-button>
+    </div>
+  </nav>
+  <main class="app-template p-4">
+    <router-outlet></router-outlet>
+  </main>
+  <p-menu #menu
+          [model]="userMenuItems"
+          [popup]="true"
+  ></p-menu>
+</ng-container>
