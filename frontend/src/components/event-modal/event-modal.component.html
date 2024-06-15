@@ -1,0 +1,39 @@
+<p-button (click)="openModal()">
+  <i class="pi pi-calendar-plus me-2"></i>
+  Novo evento
+</p-button>
+
+<p-dialog header="Criar novo evento"
+          [modal]="true"
+          [(visible)]="modalVisible"
+          [style]="{ width: 'min(600px, 80vw)' }"
+>
+  <div class="row mb-3">
+    <div class="col-12">
+      <label class="d-block">Nome do evento</label>
+      <input type="text" pInputText class="w-100">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-6 mb-3 mb-sm-0">
+      <label class="d-block">Período para marcar evento</label>
+      <p-calendar selectionMode="range"
+                  styleClass="w-100"
+                  appendTo="body"
+      ></p-calendar>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label class="d-block">Participantes</label>
+      <input type="text" pInputText class="w-100">
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button severity="danger"
+              [text]="true"
+              (click)="closeModal()"
+    >
+      Cancelar
+    </p-button>
+    <p-button>Criar evento</p-button>
+  </ng-template>
+</p-dialog>

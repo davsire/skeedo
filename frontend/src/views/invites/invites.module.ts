@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
 import { InvitesComponent } from './invites.component';
 
 @NgModule({
@@ -7,7 +8,8 @@ import { InvitesComponent } from './invites.component';
     InvitesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    CardModule,
   ]
 })
 export class InvitesModule { }

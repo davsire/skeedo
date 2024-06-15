@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
 import { ProfileComponent } from './profile.component';
 
 @NgModule({
@@ -7,7 +8,8 @@ import { ProfileComponent } from './profile.component';
     ProfileComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    CardModule,
   ]
 })
 export class ProfileModule { }
