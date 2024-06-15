@@ -1,20 +1,25 @@
 <div id="login-page">
-  <p-card header="Entrar" styleClass="login-form p-2">
+  <p-card header="Login" styleClass="login-form p-2">
     <div class="row mb-2">
       <div class="col">
         <label class="d-block">Usuário</label>
         <input pInputText type="text" class="w-100">
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col">
         <label class="d-block">Senha</label>
         <input pInputText type="password" class="w-100">
       </div>
     </div>
+    <div class="row">
+      <div class="col text-center">
+        <p-button styleClass="rounded">Entrar</p-button>
+      </div>
+    </div>
     <div class="row mt-3">
       <div class="col">
-        <small>Primeiro acesso? Cadastre-se clicando aqui!</small>
+        <small>Primeiro acesso? Cadastre-se clicando <a [routerLink]="[registerPath]" class="register-here">aqui!</a></small>
       </div>
     </div>
   </p-card>

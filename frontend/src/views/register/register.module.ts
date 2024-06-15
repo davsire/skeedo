@@ -4,14 +4,15 @@ import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { LoginComponent } from './login.component';
+import { RegisterComponent } from './register.component';
+
 
 @NgModule({
   declarations: [
-    LoginComponent
+    RegisterComponent,
   ],
   exports: [
-    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     CommonModule,
@@ -21,4 +22,4 @@ import { LoginComponent } from './login.component';
     ButtonModule,
   ]
 })
-export class LoginModule { }
+export class RegisterModule { }

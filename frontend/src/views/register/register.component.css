@@ -1,4 +1,4 @@
-#login-page {
+#register-page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,11 +6,11 @@
   background: linear-gradient(45deg, var(--primary-color) 35%, rgb(99,188,241) 100%);
 }
 
-.login-form {
+.register-form {
   width: min(500px, 80vw);
 }
 
-.register-here {
+.login-here {
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
