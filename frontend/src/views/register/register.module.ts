@@ -6,7 +6,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { RegisterComponent } from './register.component';
 
-
 @NgModule({
   declarations: [
     RegisterComponent,

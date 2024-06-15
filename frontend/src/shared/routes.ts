@@ -7,5 +7,14 @@ export const ROUTES = {
   },
   register: {
     path: 'register'
-  }
+  },
+  home: {
+    path: 'home',
+  },
+  profile: {
+    path: 'profile',
+  },
+  invites: {
+    path: 'invites',
+  },
 };

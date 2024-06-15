@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { ROUTES } from 'src/shared/routes';
 
 @Component({
   selector: 'app-template',
@@ -9,10 +10,14 @@ import { MenuItem } from 'primeng/api';
 })
 export class TemplateComponent {
 
+  readonly homePath = ROUTES.home.path;
+  readonly profilePath = ROUTES.profile.path;
+  readonly invitesPath = ROUTES.invites.path;
   readonly userMenuItems: MenuItem[] = [
     {
       icon: 'pi pi-user',
-      label: 'Perfil'
+      label: 'Perfil',
+      routerLink: this.profilePath,
     },
     {
       icon: 'pi pi-sign-out',
