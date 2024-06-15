@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class EventModalComponent {
 
   modalVisible = false;
+  users: string[] = ['Davi', 'Gabriel', 'Leonardo']; // this is a mock, update after the endponit to get users by nickname is complete
 
   public openModal(): void {
     this.modalVisible = true;

@@ -24,7 +24,14 @@
     </div>
     <div class="col-12 col-sm-6">
       <label class="d-block">Participantes</label>
-      <input type="text" pInputText class="w-100">
+      <p-multiSelect [options]="users"
+                     styleClass="w-100"
+                     emptyMessage="Sem resultados"
+                     emptyFilterMessage="Sem resultados para a pesquisa"
+                     [maxSelectedLabels]="1"
+                     selectedItemsLabel="{0} participantes"
+                     appendTo="body"
+      ></p-multiSelect>
     </div>
   </div>
   <ng-template pTemplate="footer">
