@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +22,8 @@ import { EventModalComponent } from './event-modal.component';
     InputTextModule,
     CalendarModule,
     MultiSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class EventModalModule { }
