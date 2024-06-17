@@ -15,7 +15,7 @@ export class EventModalComponent implements OnInit {
 
   eventData: FormGroup;
   modalVisible = false;
-  users: string[] = ['Davi', 'Gabriel', 'Leonardo']; // this is a mock, update after the endponit to get users by nickname is complete
+  users: string[] = ['Davi', 'Gabriel', 'Leonardo']; // @TODO: replace this mock to a call to get users endpoint
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -38,7 +38,7 @@ export class EventModalComponent implements OnInit {
   }
 
   public createEvent(): void {
-    console.log(this.eventData.getRawValue()); // temporary
+    console.log(this.eventData.getRawValue()); // @TODO: replace this mock to a call to create event endpoint
   }
 
   private initEventData(): void {

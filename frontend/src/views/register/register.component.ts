@@ -14,6 +14,6 @@ export class RegisterComponent {
   userData: FormGroup;
 
   public createUser(): void {
-    console.log(this.userData.getRawValue()); // temporary
+    console.log(this.userData.getRawValue()); // @TODO: replace this mock to a call to create user endpoint
   }
 }

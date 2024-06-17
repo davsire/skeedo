@@ -28,11 +28,11 @@ export class ProfileComponent implements AfterViewInit {
   }
 
   public updateUser(): void {
-    console.log(this.userData.getRawValue()); // temporary
+    console.log(this.userData.getRawValue()); // @TODO: replace this mock to a call to update user endpoint
   }
 
   private getUserData(): void {
-    // this is a mock, change after the endpoint to get user data is done
+    // @TODO: replace this mock to a call to get user data endpoint
     this.userData.get(CONSTANTS.FIELD_USER_NAME).setValue('Davi');
     this.userData.get(CONSTANTS.FIELD_USER_NICKNAME).setValue('davsire');
   }
