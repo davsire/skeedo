@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CONSTANTS } from 'src/shared/constants';
 
 @Component({
   selector: 'app-event-modal',
@@ -8,9 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class EventModalComponent implements OnInit {
 
-  readonly fieldEventName = 'eventName';
-  readonly fieldDateRange = 'dateRange';
-  readonly fieldParticipants = 'participants';
+  readonly fieldEventName = CONSTANTS.FIELD_EVENT_NAME;
+  readonly fieldDateRange = CONSTANTS.FIELD_DATE_RANGE;
+  readonly fieldParticipants = CONSTANTS.FIELD_PARTICIPANTS;
 
   eventData: FormGroup;
   modalVisible = false;

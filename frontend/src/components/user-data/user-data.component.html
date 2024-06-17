@@ -1,0 +1,47 @@
+<ng-container *ngIf="userData" [formGroup]="userData">
+  <div class="row mb-2">
+    <div class="col">
+      <label class="d-block">Nome</label>
+      <input [formControlName]="fieldName"
+             pInputText
+             [disabled]="disableFields"
+             type="text"
+             class="w-100">
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col">
+      <label class="d-block">Usuário</label>
+      <input [formControlName]="fieldNickName"
+             pInputText
+             [disabled]="disableFields"
+             type="text"
+             class="w-100">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <label class="d-block">Senha</label>
+      <input [formControlName]="fieldPassword"
+             pInputText
+             [disabled]="disableFields"
+             type="password"
+             class="w-100">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <label class="d-block">Confirme sua senha</label>
+      <input [formControlName]="fieldConfirmPassword"
+             pInputText
+             [disabled]="disableFields"
+             type="password"
+             class="w-100">
+      <span *ngIf="userData.get(fieldConfirmPassword).errors?.['differentPassword']"
+            class="text-danger"
+      >
+        As senhas devem ser iguais!
+      </span>
+    </div>
+  </div>
+</ng-container>

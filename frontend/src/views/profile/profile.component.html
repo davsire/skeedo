@@ -1,3 +1,26 @@
-<p-card>
-  <p>profile works!</p>
+<p-card header="Meus dados"
+        class="d-flex justify-content-center align-items-center h-100"
+        styleClass="profile-data p-2"
+>
+  <app-user-data [(userData)]="userData" [disableFields]="!isEdicao"></app-user-data>
+  <ng-template pTemplate="footer">
+    <footer class="d-flex justify-content-end">
+      <p-button *ngIf="!isEdicao; else edicao" (click)="toggleEdition(true)">
+        Editar
+      </p-button>
+      <ng-template #edicao>
+        <p-button severity="danger"
+                  [text]="true"
+                  (click)="cancelEdit()"
+        >
+          Cancelar
+        </p-button>
+        <p-button [disabled]="!userData.valid"
+                  (click)="updateUser()"
+        >
+          Salvar
+        </p-button>
+      </ng-template>
+    </footer>
+  </ng-template>
 </p-card>

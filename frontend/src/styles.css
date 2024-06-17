@@ -6,3 +6,7 @@
 body {
   margin: 0;
 }
+
+.p-inputtext:disabled {
+  background-color: #e2e8f0;
+}

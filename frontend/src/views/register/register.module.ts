@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { UserDataModule } from 'src/components/user-data/user-data.module';
 import { RegisterComponent } from './register.component';
 
 @NgModule({
@@ -17,8 +17,8 @@ import { RegisterComponent } from './register.component';
     CommonModule,
     RouterModule,
     CardModule,
-    InputTextModule,
     ButtonModule,
+    UserDataModule,
   ]
 })
 export class RegisterModule { }
