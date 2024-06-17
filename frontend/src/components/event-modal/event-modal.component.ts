@@ -12,10 +12,15 @@ export class EventModalComponent implements OnInit {
   readonly fieldEventName = CONSTANTS.FIELD_EVENT_NAME;
   readonly fieldDateRange = CONSTANTS.FIELD_DATE_RANGE;
   readonly fieldParticipants = CONSTANTS.FIELD_PARTICIPANTS;
+  readonly searchFields = ['name' ,'nickname'];
 
   eventData: FormGroup;
   modalVisible = false;
-  users: string[] = ['Davi', 'Gabriel', 'Leonardo']; // @TODO: replace this mock to a call to get users endpoint
+  users: {name: string, nickname: string}[] = [
+    {name: 'Davi', nickname: 'davsire'},
+    {name: 'Gabriel', nickname: 'cruzeiroEC'},
+    {name: 'Leonardo', nickname: 'leoniro'},
+  ]; // @TODO: replace this mock to a call to get users endpoint
 
   constructor(private formBuilder: FormBuilder) {
   }

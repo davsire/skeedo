@@ -32,13 +32,19 @@
         <label class="d-block">Participantes</label>
         <p-multiSelect [formControlName]="fieldParticipants"
                        [options]="users"
-                       styleClass="w-100"
+                       optionLabel="name"
+                       [filterFields]="searchFields"
+                       [maxSelectedLabels]="1"
                        emptyMessage="Sem resultados"
                        emptyFilterMessage="Sem resultados para a pesquisa"
-                       [maxSelectedLabels]="1"
                        selectedItemsLabel="{0} participantes"
+                       styleClass="w-100"
                        appendTo="body"
-        ></p-multiSelect>
+        >
+          <ng-template let-user pTemplate="item">
+            <span>{{user.name}} ({{user.nickname}})</span>
+          </ng-template>
+        </p-multiSelect>
       </div>
     </div>
   </ng-container>
