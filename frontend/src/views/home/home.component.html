@@ -1,3 +1,31 @@
-<p-card>
+<p-card styleClass="p-2">
   <app-event-modal></app-event-modal>
+  <p-table [value]="paginatedEvents" styleClass="mt-3">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let column of columns">{{column}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-event>
+      <tr>
+        <td>
+          <span>{{event.name}}</span>
+        </td>
+        <td>
+          <span>{{event.date | date: 'dd/MM/yyyy'}}</span>
+        </td>
+        <td>
+          <span [pTooltip]="event.participants.join(', ')">
+            {{getParticipants(event.participants)}}
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator [first]="paginatorFirst"
+               [rows]="paginatorRows"
+               [totalRecords]="events.length"
+               [rowsPerPageOptions]="[1, 2, 5]"
+               (onPageChange)="onPageChange($event)" 
+  ></p-paginator>
 </p-card>
