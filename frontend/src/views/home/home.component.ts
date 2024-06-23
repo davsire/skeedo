@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { PaginatorState } from 'primeng/paginator';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  readonly paginatorFirst: number = 0;
-  readonly paginatorRows: number = 2;
   readonly numberParticipantsShow: number = 2;
   readonly columns: string[] = ['Nome do evento', 'Data do evento', 'Participantes'];
 
@@ -35,19 +32,10 @@ export class HomeComponent implements OnInit {
       participants: ['ABC', 'DEF', 'GHI', 'JKL', 'MNO'],
     },
   ]; // @TODO: replace this mock to a call to get events endpoint
-  paginatedEvents: any [] = [];
-
-  public ngOnInit(): void {
-    this.onPageChange({first: this.paginatorFirst, rows: this.paginatorRows});
-  }
 
   public getParticipants(participants: string[]): string {
     const firstParticipants = participants.slice(0, this.numberParticipantsShow);
     const lastParticipantsCount = participants.slice(this.numberParticipantsShow).length;
     return firstParticipants.join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
-  }
-
-  public onPageChange(event: PaginatorState): void {
-    this.paginatedEvents = this.events.slice(event.first, event.first + event.rows);
   }
 }

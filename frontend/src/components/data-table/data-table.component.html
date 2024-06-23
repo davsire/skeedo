@@ -1,0 +1,16 @@
+<ng-container>
+  <p-table [value]="paginatedItems" styleClass="mt-3">
+    <ng-template pTemplate="header">
+      <ng-container *ngTemplateOutlet="tableHeader"></ng-container>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <ng-container *ngTemplateOutlet="tableContent; context: {$implicit: item}"></ng-container>
+    </ng-template>
+  </p-table>
+  <p-paginator [first]="paginatorFirst"
+               [rows]="paginatorRows"
+               [totalRecords]="items.length"
+               [rowsPerPageOptions]="[1, 2, 5]"
+               (onPageChange)="onPageChange($event)" 
+  ></p-paginator>
+</ng-container>
