@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PrimeIcons } from 'primeng/api';
+import { ActionModel } from 'src/models/action-model';
 
 @Component({
   selector: 'app-invites',
@@ -67,9 +69,9 @@ export class InvitesComponent implements OnInit {
   }
 
   private mapEventFields(event: any, isSent: boolean) {
+    event[this.actionsField] = this.getActions(event, isSent);
     if (isSent) {
       event[this.participantsNameField] = this.getParticipants(event.participants);
-      return;
     }
   }
 
@@ -77,5 +79,30 @@ export class InvitesComponent implements OnInit {
     const firstParticipants = participants.slice(0, this.numberParticipantsShow);
     const lastParticipantsCount = participants.slice(this.numberParticipantsShow).length;
     return firstParticipants.join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
+  }
+
+  private getActions(event: any, isSent: boolean): ActionModel[] {
+    if (isSent) {
+      return [
+        {
+          title: 'Editar evento',
+          action: () => {},
+          icon: PrimeIcons.PENCIL,
+        },
+        {
+          title: 'Cancelar evento',
+          action: () => {},
+          icon: PrimeIcons.TRASH,
+        },
+      ];
+    }
+
+    return [
+      {
+        title: 'Responder convite',
+        action: () => {},
+        icon: PrimeIcons.SEND,
+      }
+    ];
   }
 }

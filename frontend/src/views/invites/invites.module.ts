@@ -5,6 +5,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 import { DataTableModule } from 'src/components/data-table/data-table.module';
 import { EventModalModule } from 'src/components/event-modal/event-modal.module';
+import { ActionMenuModule } from 'src/components/action-menu/action-menu.module';
 import { InvitesComponent } from './invites.component';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { InvitesComponent } from './invites.component';
     TooltipModule,
     DataTableModule,
     EventModalModule,
+    ActionMenuModule,
   ]
 })
 export class InvitesModule { }

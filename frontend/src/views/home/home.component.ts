@@ -63,12 +63,12 @@ export class HomeComponent implements OnInit {
   private getActions(event: any): ActionModel[] {
     return [
       {
-        title: 'Editar',
+        title: 'Editar evento',
         action: () => this.updateEvent(event),
         icon: PrimeIcons.PENCIL,
       },
       {
-        title: 'Excluir',
+        title: 'Cancelar evento',
         action: () => this.deleteEvent(event.id),
         icon: PrimeIcons.TRASH,
       },
