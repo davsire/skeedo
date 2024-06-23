@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
 
 @Component({
@@ -22,8 +23,10 @@ export class EventModalComponent implements OnInit {
     {name: 'Leonardo', nickname: 'leoniro'},
   ]; // @TODO: replace this mock to a call to get users endpoint
 
-  constructor(private formBuilder: FormBuilder) {
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private notificationService: NotificationService,
+  ) {}
 
   public ngOnInit(): void {
     this.initEventData();
@@ -44,6 +47,8 @@ export class EventModalComponent implements OnInit {
 
   public createEvent(): void {
     console.log(this.eventData.getRawValue()); // @TODO: replace this mock to a call to create event endpoint
+    this.notificationService.success('Evento cadastrado com sucesso!');
+    this.closeModal();
   }
 
   private initEventData(): void {

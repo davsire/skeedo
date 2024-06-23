@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { TooltipModule } from 'primeng/tooltip';
+import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
 import { TemplateComponent } from './template.component';
 
 @NgModule({
@@ -16,6 +18,10 @@ import { TemplateComponent } from './template.component';
     ButtonModule,
     MenuModule,
     TooltipModule,
+    MessagesModule,
+  ],
+  providers: [
+    MessageService,
   ]
 })
 export class TemplateModule { }
