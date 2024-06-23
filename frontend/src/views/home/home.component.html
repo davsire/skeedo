@@ -6,14 +6,14 @@
   ></app-data-table>
 
   <ng-template #header>
-    <tr>
+    <tr class="d-none d-sm-table-row">
       <th *ngFor="let column of columns">{{column}}</th>
       <th></th>
     </tr>
   </ng-template>
 
   <ng-template #content let-item>
-    <tr>
+    <tr class="d-none d-sm-table-row">
       <td>
         <span>{{item.name}}</span>
       </td>
@@ -27,6 +27,32 @@
       </td>
       <td class="text-end">
         <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+      </td>
+    </tr>
+
+    <tr class="d-table-row d-sm-none">
+      <td>
+        <div class="row">
+          <div class="col-9">
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Nome do evento</small>
+              <span>{{item.name}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Data do evento</small>
+              <span>{{item.date | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Participantes</small>
+              <span [pTooltip]="item.participants.join(', ')">
+                {{item[participantsNameField]}}
+              </span>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+          </div>
+        </div>
       </td>
     </tr>
   </ng-template>

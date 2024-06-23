@@ -1,3 +1,133 @@
-<p-card>
-  <p>invites works!</p>
+<p-card styleClass="p-2">
+  <app-event-modal></app-event-modal>
+  <p-tabView styleClass="mt-2">
+    <p-tabPanel header="Convites recebidos">
+      <ng-template pTemplate="header">
+        <i class="pi pi-download me-2"></i>
+        <span>Convites recebidos</span>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="invitesReceivedList"></ng-container>
+    </p-tabPanel>
+    <p-tabPanel header="Convites enviados">
+      <ng-template pTemplate="header">
+        <i class="pi pi-upload me-2"></i>
+        <span>Convites enviados</span>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="invitesSentList"></ng-container>
+    </p-tabPanel>
+  </p-tabView>
 </p-card>
+
+<ng-template #invitesReceivedList>
+  <app-data-table [items]="invitesReceived"
+                  [tableHeader]="invitesReceivedHeader"
+                  [tableContent]="invitesReceivedContent"
+  ></app-data-table>
+
+  <ng-template #invitesReceivedHeader>
+    <tr class="d-none d-sm-table-row">
+      <th *ngFor="let column of columnsInvitesReceived">{{column}}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #invitesReceivedContent let-item>
+    <tr class="d-none d-sm-table-row">
+      <td>
+        <span>{{item.name}}</span>
+      </td>
+      <td>
+        <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+      </td>
+      <td>
+        <span>{{item.creator}}</span>
+      </td>
+      <td class="text-end">
+        acoes
+      </td>
+    </tr>
+
+    <tr class="d-table-row d-sm-none">
+      <td>
+        <div class="row">
+          <div class="col-9">
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Nome do evento</small>
+              <span>{{item.name}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Período para marcar evento</small>
+              <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Criador</small>
+              <span>{{item.creator}}</span>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            acoes
+          </div>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</ng-template>
+
+<ng-template #invitesSentList>
+  <app-data-table [items]="invitesSent"
+                  [tableHeader]="invitesSentHeader"
+                  [tableContent]="invitesSentContent"
+  ></app-data-table>
+
+  <ng-template #invitesSentHeader>
+    <tr class="d-none d-sm-table-row">
+      <th *ngFor="let column of columnsInvitesSent">{{column}}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #invitesSentContent let-item>
+    <tr class="d-none d-sm-table-row">
+      <td>
+        <span>{{item.name}}</span>
+      </td>
+      <td>
+        <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+      </td>
+      <td>
+        <span [pTooltip]="item.participants.join(', ')">
+          {{item[participantsNameField]}}
+        </span>
+      </td>
+      <td class="text-end">
+        acoes
+      </td>
+    </tr>
+
+    <tr class="d-table-row d-sm-none">
+      <td>
+        <div class="row">
+          <div class="col-9">
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Nome do evento</small>
+              <span>{{item.name}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Período para marcar evento</small>
+              <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Participantes</small>
+              <span [pTooltip]="item.participants.join(', ')">
+                {{item[participantsNameField]}}
+              </span>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            acoes
+          </div>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</ng-template>

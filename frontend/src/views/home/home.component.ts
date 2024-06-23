@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
     return [
       {
         title: 'Editar',
-        action: () => this.editEvent(event),
+        action: () => this.updateEvent(event),
         icon: PrimeIcons.PENCIL,
       },
       {
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
     ];
   }
 
-  private editEvent(event: any): void {
+  private updateEvent(event: any): void {
     this.notificationService.success('Evento alterado com sucesso!');
   }
 
