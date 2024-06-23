@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
 
@@ -54,8 +60,15 @@ export class EventModalComponent implements OnInit {
   private initEventData(): void {
     this.eventData = this.formBuilder.group({
       [this.fieldEventName]: [null, Validators.required],
-      [this.fieldDateRange]: [null, Validators.required],
+      [this.fieldDateRange]: [null, [Validators.required, this.dateRangeValidator]],
       [this.fieldParticipants]: [[], Validators.required],
     });
+  }
+
+  private dateRangeValidator(control: AbstractControl): ValidationErrors {
+    if (!control.value || control.value.filter(date => date).length == 2) {
+      return null;
+    }
+    return {notDateRange: true};
   }
 }

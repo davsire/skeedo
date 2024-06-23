@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 import { ActionModel } from 'src/models/action-model';
+import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -41,13 +42,16 @@ export class HomeComponent implements OnInit {
     },
   ]; // @TODO: replace this mock to a call to get events endpoint
 
+  constructor(private notificationService: NotificationService) {
+  }
+
   public ngOnInit(): void {
     this.events.forEach(this.mapEventFields.bind(this));
   }
 
   private mapEventFields(event: any) {
     event[this.participantsNameField] = this.getParticipants(event.participants);
-    event[this.actionsField] = this.getActions(event.id);
+    event[this.actionsField] = this.getActions(event);
   }
 
   private getParticipants(participants: string[]): string {
@@ -56,18 +60,26 @@ export class HomeComponent implements OnInit {
     return firstParticipants.join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
   }
 
-  private getActions(eventId: any): ActionModel[] {
+  private getActions(event: any): ActionModel[] {
     return [
       {
         title: 'Editar',
-        action: () => console.log('editando ' + eventId),
+        action: () => this.editEvent(event),
         icon: PrimeIcons.PENCIL,
       },
       {
         title: 'Excluir',
-        action: () => console.log('excluindo ' + eventId),
+        action: () => this.deleteEvent(event.id),
         icon: PrimeIcons.TRASH,
       },
     ];
+  }
+
+  private editEvent(event: any): void {
+    this.notificationService.success('Evento alterado com sucesso!');
+  }
+
+  private deleteEvent(eventId: any): void {
+    this.notificationService.success('Evento excluído com sucesso!');
   }
 }

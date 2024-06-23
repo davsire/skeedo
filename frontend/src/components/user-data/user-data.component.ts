@@ -24,7 +24,7 @@ export class UserDataComponent implements OnInit {
 
   @Input() set disableFields(disable: boolean) {
     this._disableFields = disable;
-    disable ? this.userData.disable() : this.userData.enable();
+    disable ? this.userData?.disable() : this.userData?.enable();
   }
 
   public ngOnInit(): void {
