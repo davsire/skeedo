@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, PrimeIcons } from 'primeng/api';
 import { ROUTES } from 'src/shared/routes';
 
 @Component({
@@ -15,13 +15,13 @@ export class TemplateComponent {
   readonly invitesPath = ROUTES.invites.path;
   readonly userMenuItems: MenuItem[] = [
     {
-      icon: 'pi pi-user',
       label: 'Perfil',
+      icon: PrimeIcons.USER,
       routerLink: this.profilePath,
     },
     {
-      icon: 'pi pi-sign-out',
-      label: 'Sair'
+      label: 'Sair',
+      icon: PrimeIcons.SIGN_OUT,
     },
   ];
 }

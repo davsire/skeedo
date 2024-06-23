@@ -8,6 +8,7 @@
   <ng-template #header>
     <tr>
       <th *ngFor="let column of columns">{{column}}</th>
+      <th></th>
     </tr>
   </ng-template>
 
@@ -21,8 +22,11 @@
       </td>
       <td>
         <span [pTooltip]="item.participants.join(', ')">
-          {{getParticipants(item.participants)}}
+          {{item[participantsNameField]}}
         </span>
+      </td>
+      <td class="text-end">
+        <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
       </td>
     </tr>
   </ng-template>
