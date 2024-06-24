@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrimeIcons } from 'primeng/api';
+import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { ActionModel } from 'src/models/action-model';
 import { NotificationService } from 'src/services/notification.service';
 
@@ -42,8 +42,10 @@ export class HomeComponent implements OnInit {
     },
   ]; // @TODO: replace this mock to a call to get events endpoint
 
-  constructor(private notificationService: NotificationService) {
-  }
+  constructor(
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService,
+  ) {}
 
   public ngOnInit(): void {
     this.events.forEach(this.mapEventFields.bind(this));
@@ -64,12 +66,12 @@ export class HomeComponent implements OnInit {
     return [
       {
         title: 'Editar evento',
-        action: () => this.updateEvent(event),
+        action: this.updateEvent.bind(this, event),
         icon: PrimeIcons.PENCIL,
       },
       {
         title: 'Cancelar evento',
-        action: () => this.deleteEvent(event.id),
+        action: this.deleteEvent.bind(this, event.id),
         icon: PrimeIcons.TRASH,
       },
     ];
@@ -80,6 +82,12 @@ export class HomeComponent implements OnInit {
   }
 
   private deleteEvent(eventId: any): void {
-    this.notificationService.success('Evento excluído com sucesso!');
+    this.confirmationService.confirm({
+      header: 'Cancelar evento',
+      message: 'Tem certeza que deseja cancelar esse evento?',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => this.notificationService.success('Evento cancelado com sucesso!'),
+    });
   }
 }

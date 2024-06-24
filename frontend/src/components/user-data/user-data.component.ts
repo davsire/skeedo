@@ -10,6 +10,7 @@ import { CONSTANTS } from 'src/shared/constants';
 export class UserDataComponent implements OnInit {
 
   @Input() userData: FormGroup;
+  @Input() isEdition: boolean = false;
   @Output() userDataChange = new EventEmitter<FormGroup>();
 
   readonly fieldName = CONSTANTS.FIELD_USER_NAME;
@@ -36,8 +37,8 @@ export class UserDataComponent implements OnInit {
     this.userData = this.formBuilder.group({
       [this.fieldName]: [{value: null, disabled: this._disableFields}, Validators.required],
       [this.fieldNickName]: [{value: null, disabled: this._disableFields}, Validators.required],
-      [this.fieldPassword]: [{value: null, disabled: this._disableFields}, Validators.required],
-      [this.fieldConfirmPassword]: [{value: null, disabled: this._disableFields}, [Validators.required, this.confirmPasswordValidator.bind(this)]],
+      [this.fieldPassword]: [{value: null, disabled: this._disableFields}, this.passwordRequiredValidator.bind(this)],
+      [this.fieldConfirmPassword]: [{value: null, disabled: this._disableFields}, [this.passwordRequiredValidator.bind(this), this.confirmPasswordValidator.bind(this)]],
     });
     this.userDataChange.emit(this.userData);
   }
@@ -47,5 +48,12 @@ export class UserDataComponent implements OnInit {
       return null;
     }
     return {differentPassword: true};
+  }
+
+  private passwordRequiredValidator(control: AbstractControl): ValidationErrors {
+    if (this.isEdition) {
+      return null;
+    }
+    return Validators.required(control);
   }
 }

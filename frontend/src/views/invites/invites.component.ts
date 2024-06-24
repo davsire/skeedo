@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PrimeIcons } from 'primeng/api';
+import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { ActionModel } from 'src/models/action-model';
+import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-invites',
@@ -63,6 +64,11 @@ export class InvitesComponent implements OnInit {
     },
   ]; // @TODO: replace this mock to a call to get events endpoint
 
+  constructor(
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService,
+  ) {}
+
   public ngOnInit(): void {
     this.invitesSent.forEach(invite => this.mapEventFields(invite, true));
     this.invitesReceived.forEach(invite => this.mapEventFields(invite, false));
@@ -86,12 +92,12 @@ export class InvitesComponent implements OnInit {
       return [
         {
           title: 'Editar evento',
-          action: () => {},
+          action: this.updateEvent.bind(this, event),
           icon: PrimeIcons.PENCIL,
         },
         {
           title: 'Cancelar evento',
-          action: () => {},
+          action: this.deleteEvent.bind(this, event.id),
           icon: PrimeIcons.TRASH,
         },
       ];
@@ -104,5 +110,19 @@ export class InvitesComponent implements OnInit {
         icon: PrimeIcons.SEND,
       }
     ];
+  }
+
+  private updateEvent(event: any): void {
+    this.notificationService.success('Evento alterado com sucesso!');
+  }
+
+  private deleteEvent(eventId: any): void {
+    this.confirmationService.confirm({
+      header: 'Cancelar evento',
+      message: 'Tem certeza que deseja cancelar esse evento?',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => this.notificationService.success('Evento cancelado com sucesso!'),
+    });
   }
 }

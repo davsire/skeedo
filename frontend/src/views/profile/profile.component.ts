@@ -11,14 +11,14 @@ import { CONSTANTS } from 'src/shared/constants';
 export class ProfileComponent implements AfterViewInit {
 
   userData: FormGroup;
-  isEdicao = false;
+  isEdition = false;
 
   public ngAfterViewInit(): void {
     this.getUserData();
   }
 
   public toggleEdition(edit: boolean): void {
-    this.isEdicao = edit;
+    this.isEdition = edit;
   }
 
   public cancelEdit(): void {

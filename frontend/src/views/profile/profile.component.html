@@ -2,10 +2,10 @@
         class="d-flex justify-content-center align-items-center h-100"
         styleClass="profile-data p-2"
 >
-  <app-user-data [(userData)]="userData" [disableFields]="!isEdicao"></app-user-data>
+  <app-user-data [(userData)]="userData" [disableFields]="!isEdition" [isEdition]="true"></app-user-data>
   <ng-template pTemplate="footer">
     <footer class="d-flex justify-content-end">
-      <p-button *ngIf="!isEdicao; else edicao" (click)="toggleEdition(true)">
+      <p-button *ngIf="!isEdition; else edicao" (click)="toggleEdition(true)">
         Editar
       </p-button>
       <ng-template #edicao>
