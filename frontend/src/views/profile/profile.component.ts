@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
 
 @Component({
@@ -12,6 +13,8 @@ export class ProfileComponent implements AfterViewInit {
 
   userData: FormGroup;
   isEdition = false;
+
+  constructor(private notificationService: NotificationService) {}
 
   public ngAfterViewInit(): void {
     this.getUserData();
@@ -29,6 +32,8 @@ export class ProfileComponent implements AfterViewInit {
 
   public updateUser(): void {
     console.log(this.userData.getRawValue()); // @TODO: replace this mock to a call to update user endpoint
+    this.notificationService.success('Cadastro atualizado com sucesso!');
+    this.cancelEdit();
   }
 
   private getUserData(): void {
