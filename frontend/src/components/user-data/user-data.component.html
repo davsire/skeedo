@@ -22,11 +22,17 @@
   <div class="row mb-3">
     <div class="col">
       <label class="d-block">Senha</label>
-      <input [formControlName]="fieldPassword"
-             pInputText
-             [disabled]="disableFields"
-             type="password"
-             class="w-100">
+      <span class="p-input-icon-right w-100">
+        <i class="pi"
+          [class]="showPassword ? 'pi-eye-slash' : 'pi-eye'"
+          (click)="togglePasswordVisibility()"
+        ></i>
+        <input [formControlName]="fieldPassword"
+               pInputText
+               [disabled]="disableFields"
+               [type]="showPassword ? 'text' : 'password'"
+               class="w-100">
+      </span>
     </div>
   </div>
   <div class="row mb-3">
@@ -35,7 +41,7 @@
       <input [formControlName]="fieldConfirmPassword"
              pInputText
              [disabled]="disableFields"
-             type="password"
+             [type]="showPassword ? 'text' : 'password'"
              class="w-100">
       <span *ngIf="userData.get(fieldConfirmPassword).errors?.['differentPassword']"
             class="text-danger"

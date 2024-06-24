@@ -18,6 +18,7 @@ export class UserDataComponent implements OnInit {
   readonly fieldPassword = CONSTANTS.FIELD_USER_PASSWORD;
   readonly fieldConfirmPassword = CONSTANTS.FIELD_USER_CONFIRM_PASSWORD;
 
+  showPassword = false;
   _disableFields = false;
 
   constructor(private formBuilder: FormBuilder) {
@@ -30,6 +31,10 @@ export class UserDataComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initUserData();
+  }
+
+  public togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   private initUserData(): void {
