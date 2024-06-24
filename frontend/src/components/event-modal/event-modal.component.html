@@ -23,10 +23,17 @@
       <div class="col-12 col-sm-6 mb-3 mb-sm-0">
         <label class="d-block">Período para marcar evento</label>
         <p-calendar [formControlName]="fieldDateRange"
+                    [minDate]="today"
                     selectionMode="range"
+                    dateFormat="dd/mm/yy"
                     styleClass="w-100"
                     appendTo="body"
         ></p-calendar>
+        <span *ngIf="eventData?.get(fieldDateRange).errors?.['notDateRange']"
+              class="text-danger"
+        >
+          Escolha um período de data!
+        </span>
       </div>
       <div class="col-12 col-sm-6">
         <label class="d-block">Participantes</label>

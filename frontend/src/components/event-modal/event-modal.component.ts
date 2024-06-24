@@ -20,6 +20,7 @@ export class EventModalComponent implements OnInit {
   readonly fieldDateRange = CONSTANTS.FIELD_DATE_RANGE;
   readonly fieldParticipants = CONSTANTS.FIELD_PARTICIPANTS;
   readonly searchFields = ['name' ,'nickname'];
+  readonly today = new Date();
 
   eventData: FormGroup;
   modalVisible = false;
