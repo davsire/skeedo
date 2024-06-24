@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { ROUTES } from 'src/shared/routes';
 
@@ -24,4 +25,10 @@ export class TemplateComponent {
       icon: PrimeIcons.SIGN_OUT,
     },
   ];
+
+  constructor(private router: Router) {}
+
+  public isCurrentRoute(route: string): boolean {
+    return this.router.url.includes(route);
+  }
 }

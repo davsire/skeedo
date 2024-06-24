@@ -5,7 +5,7 @@
     <p-button icon="pi pi-home"
               pTooltip="Home"
               [rounded]="true"
-              styleClass="app-nav-button"
+              [styleClass]="'app-nav-button' + (isCurrentRoute(homePath) ? ' border border-3' : '')"
               [routerLink]="homePath"
     ></p-button>
     <span class="fs-5">Nome legal (ou logo)</span>
@@ -14,14 +14,14 @@
                 pTooltip="Seus convites"
                 tooltipPosition="left"
                 [rounded]="true"
-                styleClass="app-nav-button me-1"
+                [styleClass]="'app-nav-button me-1' + (isCurrentRoute(invitesPath) ? ' border border-3' : '')"
                 [routerLink]="invitesPath"
       ></p-button>
       <p-button icon="pi pi-user"
                 pTooltip="Seu perfil"
                 tooltipPosition="left"
                 [rounded]="true"
-                styleClass="app-nav-button"
+                [styleClass]="'app-nav-button' + (isCurrentRoute(profilePath) ? ' border border-3' : '')"
                 (click)="menu.toggle($event)"
       ></p-button>
     </div>
