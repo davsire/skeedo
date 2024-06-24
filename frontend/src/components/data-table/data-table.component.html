@@ -10,7 +10,11 @@
   <p-paginator [first]="paginatorFirst"
                [rows]="paginatorRows"
                [totalRecords]="items.length"
-               [rowsPerPageOptions]="[1, 2, 5]"
+               [rowsPerPageOptions]="paginatorRowsPerPageOptions"
+               [showPageLinks]="!isMobile"
+               [showFirstLastIcon]="!isMobile"
+               [showCurrentPageReport]="isMobile"
+               currentPageReportTemplate="{first} - {last} de {totalRecords}"
                (onPageChange)="onPageChange($event)" 
   ></p-paginator>
 </ng-container>
