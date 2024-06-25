@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
+import { Subject } from 'rxjs';
 import { ActionModel } from 'src/models/action-model';
 import { NotificationService } from 'src/services/notification.service';
 
@@ -16,6 +17,7 @@ export class InvitesComponent implements OnInit {
   readonly participantsNameField = 'participantsNameField';
   readonly actionsField = 'actions';
 
+  openRespondInvite = new Subject<any>();
   invitesSent: any[] = [
     {
       id: 1,
@@ -38,7 +40,7 @@ export class InvitesComponent implements OnInit {
       endDate: new Date('2024-07-31'),
       participants: ['Fulano', 'Ciclano'],
     },
-  ]; // @TODO: replace this mock to a call to get events endpoint
+  ]; // @TODO: replace this mock to a call to get invites endpoint
 
   invitesReceived: any[] = [
     {
@@ -62,7 +64,7 @@ export class InvitesComponent implements OnInit {
       endDate: new Date('2024-07-31'),
       creator: 'Pessoa C'
     },
-  ]; // @TODO: replace this mock to a call to get events endpoint
+  ]; // @TODO: replace this mock to a call to get invites endpoint
 
   constructor(
     private notificationService: NotificationService,
@@ -70,14 +72,14 @@ export class InvitesComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.invitesSent.forEach(invite => this.mapEventFields(invite, true));
-    this.invitesReceived.forEach(invite => this.mapEventFields(invite, false));
+    this.invitesSent.forEach(invite => this.mapInviteFields(invite, true));
+    this.invitesReceived.forEach(invite => this.mapInviteFields(invite, false));
   }
 
-  private mapEventFields(event: any, isSent: boolean) {
-    event[this.actionsField] = this.getActions(event, isSent);
+  private mapInviteFields(invite: any, isSent: boolean) {
+    invite[this.actionsField] = this.getActions(invite, isSent);
     if (isSent) {
-      event[this.participantsNameField] = this.getParticipants(event.participants);
+      invite[this.participantsNameField] = this.getParticipants(invite.participants);
     }
   }
 
@@ -87,17 +89,22 @@ export class InvitesComponent implements OnInit {
     return firstParticipants.join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
   }
 
-  private getActions(event: any, isSent: boolean): ActionModel[] {
+  private getActions(invite: any, isSent: boolean): ActionModel[] {
     if (isSent) {
       return [
         {
-          title: 'Editar evento',
-          action: this.updateEvent.bind(this, event),
+          title: 'Marcar evento',
+          action: () => {},
+          icon: PrimeIcons.CALENDAR,
+        },
+        {
+          title: 'Editar convite',
+          action: this.updateInvite.bind(this, invite),
           icon: PrimeIcons.PENCIL,
         },
         {
-          title: 'Cancelar evento',
-          action: this.deleteEvent.bind(this, event.id),
+          title: 'Cancelar convite',
+          action: this.deleteInvite.bind(this, invite.id),
           icon: PrimeIcons.TRASH,
         },
       ];
@@ -106,23 +113,23 @@ export class InvitesComponent implements OnInit {
     return [
       {
         title: 'Responder convite',
-        action: () => {},
+        action: () => this.openRespondInvite.next(invite),
         icon: PrimeIcons.SEND,
       }
     ];
   }
 
-  private updateEvent(event: any): void {
-    this.notificationService.success('Evento alterado com sucesso!');
+  private updateInvite(invite: any): void {
+    this.notificationService.success('Convite alterado com sucesso!');
   }
 
-  private deleteEvent(eventId: any): void {
+  private deleteInvite(inviteId: any): void {
     this.confirmationService.confirm({
-      header: 'Cancelar evento',
-      message: 'Tem certeza que deseja cancelar esse evento?',
+      header: 'Cancelar convite',
+      message: 'Tem certeza que deseja cancelar esse convite?',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
-      accept: () => this.notificationService.success('Evento cancelado com sucesso!'),
+      accept: () => this.notificationService.success('Convite cancelado com sucesso!'),
     });
   }
 }

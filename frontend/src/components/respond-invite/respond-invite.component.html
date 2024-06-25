@@ -1,0 +1,41 @@
+<p-dialog header="Responder convite"
+          [modal]="true"
+          [(visible)]="modalVisible"
+          [style]="{ width: 'min(600px, 80vw)' }"
+          (onHide)="clearRespondInviteData()"
+>
+  <ng-container [formGroup]="respondInviteData">
+    <div class="row mb-2">
+      <div class="col-12 col-md-6">
+        <span>Período para marcar o evento:</span>
+      </div>
+      <div class="col-12 col-md-6">
+        <span class="fw-bold">{{invite?.beginDate | date: 'dd/MM/yyyy'}} até {{invite?.endDate | date: 'dd/MM/yyyy'}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="d-block">Escolha os seus dias disponíveis</label>
+        <p-calendar [formControlName]="fieldAvailableDays"
+                    [minDate]="invite?.beginDate"
+                    [maxDate]="invite?.endDate"
+                    selectionMode="multiple"
+                    dateFormat="dd/mm/yy"
+                    styleClass="w-100"
+                    appendTo="body"
+        ></p-calendar>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template pTemplate="footer">
+    <p-button severity="danger"
+              [text]="true"
+              (click)="closeModal()"
+    >
+      Cancelar
+    </p-button>
+    <p-button (click)="respondInvite()">
+      Enviar resposta
+    </p-button>
+  </ng-template>
+</p-dialog>

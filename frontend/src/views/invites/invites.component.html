@@ -31,19 +31,19 @@
     </tr>
   </ng-template>
 
-  <ng-template #invitesReceivedContent let-item>
+  <ng-template #invitesReceivedContent let-invite>
     <tr class="d-none d-sm-table-row">
       <td>
-        <span>{{item.name}}</span>
+        <span>{{invite.name}}</span>
       </td>
       <td>
-        <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+        <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
       </td>
       <td>
-        <span>{{item.creator}}</span>
+        <span>{{invite.creator}}</span>
       </td>
       <td class="text-end">
-        <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+        <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
       </td>
     </tr>
 
@@ -53,19 +53,19 @@
           <div class="col-9">
             <div class="row mb-2">
               <small class="d-block fw-bold">Nome do evento</small>
-              <span>{{item.name}}</span>
+              <span>{{invite.name}}</span>
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Período para marcar evento</small>
-              <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+              <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Criador</small>
-              <span>{{item.creator}}</span>
+              <span>{{invite.creator}}</span>
             </div>
           </div>
           <div class="col-3 text-end">
-            <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+            <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
           </div>
         </div>
       </td>
@@ -86,21 +86,21 @@
     </tr>
   </ng-template>
 
-  <ng-template #invitesSentContent let-item>
+  <ng-template #invitesSentContent let-invite>
     <tr class="d-none d-sm-table-row">
       <td>
-        <span>{{item.name}}</span>
+        <span>{{invite.name}}</span>
       </td>
       <td>
-        <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+        <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
       </td>
       <td>
-        <span [pTooltip]="item.participants.join(', ')">
-          {{item[participantsNameField]}}
+        <span [pTooltip]="invite.participants.join(', ')">
+          {{invite[participantsNameField]}}
         </span>
       </td>
       <td class="text-end">
-        <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+        <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
       </td>
     </tr>
 
@@ -110,24 +110,26 @@
           <div class="col-9">
             <div class="row mb-2">
               <small class="d-block fw-bold">Nome do evento</small>
-              <span>{{item.name}}</span>
+              <span>{{invite.name}}</span>
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Período para marcar evento</small>
-              <span>{{item.beginDate | date: 'dd/MM/yyyy'}} - {{item.endDate | date: 'dd/MM/yyyy'}}</span>
+              <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Participantes</small>
-              <span [pTooltip]="item.participants.join(', ')">
-                {{item[participantsNameField]}}
+              <span [pTooltip]="invite.participants.join(', ')">
+                {{invite[participantsNameField]}}
               </span>
             </div>
           </div>
           <div class="col-3 text-end">
-            <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+            <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
           </div>
         </div>
       </td>
     </tr>
   </ng-template>
 </ng-template>
+
+<app-respond-invite [openRespondInvite]="openRespondInvite"></app-respond-invite>

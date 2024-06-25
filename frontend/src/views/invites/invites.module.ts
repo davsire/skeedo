@@ -6,6 +6,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DataTableModule } from 'src/components/data-table/data-table.module';
 import { EventModalModule } from 'src/components/event-modal/event-modal.module';
 import { ActionMenuModule } from 'src/components/action-menu/action-menu.module';
+import { RespondInviteModule } from 'src/components/respond-invite/respond-invite.module';
 import { InvitesComponent } from './invites.component';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { InvitesComponent } from './invites.component';
     DataTableModule,
     EventModalModule,
     ActionMenuModule,
+    RespondInviteModule,
   ]
 })
 export class InvitesModule { }
