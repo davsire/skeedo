@@ -6,6 +6,7 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
+import { User } from 'src/models/user.model';
 import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
 
@@ -19,15 +20,24 @@ export class EventModalComponent implements OnInit {
   readonly fieldEventName = CONSTANTS.FIELD_EVENT_NAME;
   readonly fieldDateRange = CONSTANTS.FIELD_DATE_RANGE;
   readonly fieldParticipants = CONSTANTS.FIELD_PARTICIPANTS;
-  readonly searchFields = ['name' ,'nickname'];
+  readonly searchFields = ['displayName' ,'username'];
   readonly today = new Date();
 
   eventData: FormGroup;
   modalVisible = false;
-  users: {name: string, nickname: string}[] = [
-    {name: 'Davi', nickname: 'davsire'},
-    {name: 'Gabriel', nickname: 'cruzeiroEC'},
-    {name: 'Leonardo', nickname: 'leoniro'},
+  users: User[] = [
+    {
+      displayName: 'Davi',
+      username: 'davsire',
+    } as User,
+    {
+      displayName: 'Leonardo',
+      username: 'leoniro',
+    } as User,
+    {
+      displayName: 'Gabriel',
+      username: 'cruzeiroEC'
+    } as User,
   ]; // @TODO: replace this mock to a call to get users endpoint
 
   constructor(

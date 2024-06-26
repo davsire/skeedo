@@ -10,15 +10,15 @@
         <span>Período para marcar o evento:</span>
       </div>
       <div class="col-12 col-md-6">
-        <span class="fw-bold">{{invite?.beginDate | date: 'dd/MM/yyyy'}} até {{invite?.endDate | date: 'dd/MM/yyyy'}}</span>
+        <span class="fw-bold">{{invite?.event.beginDate | date: 'dd/MM/yyyy'}} até {{invite?.event.endDate | date: 'dd/MM/yyyy'}}</span>
       </div>
     </div>
     <div class="row">
       <div class="col">
         <label class="d-block">Escolha os seus dias disponíveis</label>
         <p-calendar [formControlName]="fieldAvailableDays"
-                    [minDate]="invite?.beginDate"
-                    [maxDate]="invite?.endDate"
+                    [minDate]="invite?.event.beginDate"
+                    [maxDate]="invite?.event.endDate"
                     selectionMode="multiple"
                     dateFormat="dd/mm/yy"
                     styleClass="w-100"

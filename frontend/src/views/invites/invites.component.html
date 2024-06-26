@@ -34,13 +34,13 @@
   <ng-template #invitesReceivedContent let-invite>
     <tr class="d-none d-sm-table-row">
       <td>
-        <span>{{invite.name}}</span>
+        <span>{{invite.event.name}}</span>
       </td>
       <td>
-        <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
+        <span>{{invite.event.beginDate | date: 'dd/MM/yyyy'}} - {{invite.event.endDate | date: 'dd/MM/yyyy'}}</span>
       </td>
       <td>
-        <span>{{invite.creator}}</span>
+        <span>{{invite.event.creator.displayName}}</span>
       </td>
       <td class="text-end">
         <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
@@ -53,15 +53,15 @@
           <div class="col-9">
             <div class="row mb-2">
               <small class="d-block fw-bold">Nome do evento</small>
-              <span>{{invite.name}}</span>
+              <span>{{invite.event.name}}</span>
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Período para marcar evento</small>
-              <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
+              <span>{{invite.event.beginDate | date: 'dd/MM/yyyy'}} - {{invite.event.endDate | date: 'dd/MM/yyyy'}}</span>
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Criador</small>
-              <span>{{invite.creator}}</span>
+              <span>{{invite.event.creator.displayName}}</span>
             </div>
           </div>
           <div class="col-3 text-end">
@@ -95,7 +95,7 @@
         <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
       </td>
       <td>
-        <span [pTooltip]="invite.participants.join(', ')">
+        <span [pTooltip]="invite[participantsNameFullField]">
           {{invite[participantsNameField]}}
         </span>
       </td>
@@ -118,7 +118,7 @@
             </div>
             <div class="row mb-2">
               <small class="d-block fw-bold">Participantes</small>
-              <span [pTooltip]="invite.participants.join(', ')">
+              <span [pTooltip]="invite[participantsNameFullField]">
                 {{invite[participantsNameField]}}
               </span>
             </div>

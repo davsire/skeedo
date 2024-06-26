@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { ActionModel } from 'src/models/action.model';
+import { Event } from 'src/models/event.model';
+import { User } from 'src/models/user.model';
 import { NotificationService } from 'src/services/notification.service';
+import { EventStatus } from 'src/shared/constants';
 
 @Component({
   selector: 'app-home',
@@ -12,33 +15,92 @@ export class HomeComponent implements OnInit {
 
   readonly numberParticipantsShow: number = 2;
   readonly columns: string[] = ['Nome do evento', 'Data do evento', 'Participantes'];
+  readonly participantsNameFullField = 'participantsNameFullField';
   readonly participantsNameField = 'participantsNameField';
   readonly actionsField = 'actions';
 
-  events: any[] = [
+  events: Event[] = [
     {
-      id: 1,
+      _id: '1',
       name: 'Fazer trabalho',
-      date: new Date('2024-06-01'),
-      participants: ['Davi', 'Leonardo', 'Gabriel'],
+      creator: {
+        displayName: 'Pessoa A'
+      } as User,
+      status: EventStatus.EVENT_CLOSED,
+      beginDate: new Date('2024-06-01'),
+      endDate: new Date('2024-06-31'),
+      eventDate:  new Date('2024-06-01'),
+      participants: [
+        {
+          displayName: 'Davi'
+        } as User,
+        {
+          displayName: 'Leonardo'
+        } as User,
+        {
+          displayName: 'Gabriel'
+        } as User,
+      ],
     },
     {
-      id: 2,
+      _id: '2',
       name: 'Sair para caminhar',
-      date: new Date('2024-06-12'),
-      participants: ['Alguém'],
+      creator: {
+        displayName: 'Pessoa B'
+      } as User,
+      status: EventStatus.EVENT_CLOSED,
+      beginDate: new Date('2024-07-15'),
+      endDate: new Date('2024-07-18'),
+      eventDate: new Date('2024-07-17'),
+      participants: [
+        {
+          displayName: 'Alguém'
+        } as User,
+      ],
     },
     {
-      id: 3,
+      _id: '3',
       name: 'Piquenique',
-      date: new Date('2024-06-20'),
-      participants: ['Fulano', 'Ciclano'],
+      creator: {
+        displayName: 'Pessoa C'
+      } as User,
+      status: EventStatus.EVENT_CLOSED,
+      beginDate: new Date('2024-06-01'),
+      endDate: new Date('2024-07-31'),
+      eventDate: new Date('2024-06-20'),
+      participants: [
+        {
+          displayName: 'Fulano'
+        } as User,
+        {
+          displayName: 'Ciclano'
+        } as User,
+      ],
     },
     {
-      id: 4,
+      _id: '4',
       name: 'Outro evento bacana',
-      date: new Date('2024-06-31'),
-      participants: ['ABC', 'DEF', 'GHI', 'JKL', 'MNO'],
+      creator: {
+        displayName: 'Pessoa D'
+      } as User,
+      status: EventStatus.EVENT_CLOSED,
+      beginDate: new Date('2024-06-01'),
+      endDate: new Date('2024-07-31'),
+      eventDate: new Date('2024-06-31'),
+      participants: [
+        {
+          displayName: 'ABC'
+        } as User,
+        {
+          displayName: 'DEF'
+        } as User,
+        {
+          displayName: 'GHI'
+        } as User,
+        {
+          displayName: 'JKL'
+        } as User,
+      ],
     },
   ]; // @TODO: replace this mock to a call to get events endpoint
 
@@ -51,18 +113,22 @@ export class HomeComponent implements OnInit {
     this.events.forEach(this.mapEventFields.bind(this));
   }
 
-  private mapEventFields(event: any) {
-    event[this.participantsNameField] = this.getParticipants(event.participants);
-    event[this.actionsField] = this.getActions(event);
+  private mapEventFields(invite: Event) {
+    invite[this.actionsField] = this.getActions(invite);
+    invite[this.participantsNameFullField] = this.getParticipants(invite.participants, true);
+    invite[this.participantsNameField] = this.getParticipants(invite.participants);
   }
 
-  private getParticipants(participants: string[]): string {
+  private getParticipants(participants: User[], full = false): string {
+    if (full) {
+      return participants.map(participant => participant.displayName).join(', ');
+    }
     const firstParticipants = participants.slice(0, this.numberParticipantsShow);
     const lastParticipantsCount = participants.slice(this.numberParticipantsShow).length;
-    return firstParticipants.join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
+    return firstParticipants.map(participant => participant.displayName).join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
   }
 
-  private getActions(event: any): ActionModel[] {
+  private getActions(event: Event): ActionModel[] {
     return [
       {
         title: 'Editar evento',
@@ -71,17 +137,17 @@ export class HomeComponent implements OnInit {
       },
       {
         title: 'Cancelar evento',
-        action: this.deleteEvent.bind(this, event.id),
+        action: this.deleteEvent.bind(this, event._id),
         icon: PrimeIcons.TRASH,
       },
     ];
   }
 
-  private updateEvent(event: any): void {
+  private updateEvent(event: Event): void {
     this.notificationService.success('Evento alterado com sucesso!');
   }
 
-  private deleteEvent(eventId: any): void {
+  private deleteEvent(eventId: string): void {
     this.confirmationService.confirm({
       header: 'Cancelar evento',
       message: 'Tem certeza que deseja cancelar esse evento?',

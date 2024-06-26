@@ -2,6 +2,7 @@ import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { Invite } from 'src/models/invite.model';
 import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
 
@@ -12,13 +13,13 @@ import { CONSTANTS } from 'src/shared/constants';
 })
 export class RespondInviteComponent implements OnInit {
 
-  @Input() openRespondInvite: Subject<any>;
+  @Input() openRespondInvite: Subject<Invite>;
 
   readonly fieldAvailableDays = CONSTANTS.FIELD_AVAILABLE_DAYS;
 
   destroyRef = inject(DestroyRef);
   modalVisible = false;
-  invite: any;
+  invite: Invite;
   respondInviteData: FormGroup;
 
   constructor(

@@ -39,7 +39,7 @@
         <label class="d-block">Participantes</label>
         <p-multiSelect [formControlName]="fieldParticipants"
                        [options]="users"
-                       optionLabel="name"
+                       optionLabel="displayName"
                        [filterFields]="searchFields"
                        [maxSelectedLabels]="1"
                        emptyMessage="Sem resultados"
@@ -49,7 +49,7 @@
                        appendTo="body"
         >
           <ng-template let-user pTemplate="item">
-            <span>{{user.name}} ({{user.nickname}})</span>
+            <span>{{user.displayName}} ({{user.username}})</span>
           </ng-template>
         </p-multiSelect>
       </div>
