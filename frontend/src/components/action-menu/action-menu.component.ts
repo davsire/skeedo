@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { ActionModel } from 'src/models/action-model';
+import { ActionModel } from 'src/models/action.model';
 
 @Component({
   selector: 'app-action-menu',

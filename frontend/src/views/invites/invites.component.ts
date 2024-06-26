@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { Subject } from 'rxjs';
-import { ActionModel } from 'src/models/action-model';
+import { ActionModel } from 'src/models/action.model';
 import { NotificationService } from 'src/services/notification.service';
 
 @Component({

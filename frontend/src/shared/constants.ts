@@ -8,3 +8,8 @@ export const CONSTANTS = {
   FIELD_USER_CONFIRM_PASSWORD: 'confirmPassword',
   FIELD_AVAILABLE_DAYS: 'availableDays',
 };
+
+export enum EventStatus {
+  WAITING_RESPONSES = 'WAITING_RESPONSES',
+  EVENT_CLOSED = 'EVENT_CLOSED',
+}
