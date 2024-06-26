@@ -1,6 +1,6 @@
 import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
@@ -44,13 +44,14 @@ export class RespondInviteComponent implements OnInit {
   }
 
   public respondInvite(): void {
+    console.log(this.respondInviteData.getRawValue()); // @TODO: replace this mock to a call to update invite endpoint
     this.notificationService.success('Convite respondido! Agora é só esperar o evento ser marcado :)')
     this.closeModal();
   }
 
   private initRespondInviteData(): void {
     this.respondInviteData = this.formBuilder.group({
-      [this.fieldAvailableDays]: null,
+      [this.fieldAvailableDays]: [null, Validators.required],
     });
   }
 }

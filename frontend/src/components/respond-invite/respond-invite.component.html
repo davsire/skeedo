@@ -34,7 +34,9 @@
     >
       Cancelar
     </p-button>
-    <p-button (click)="respondInvite()">
+    <p-button [disabled]="!respondInviteData.valid"
+              (click)="respondInvite()"
+    >
       Enviar resposta
     </p-button>
   </ng-template>
