@@ -39,6 +39,6 @@ export class ProfileComponent implements AfterViewInit {
   private getUserData(): void {
     // @TODO: replace this mock to a call to get user data endpoint
     this.userData.get(CONSTANTS.FIELD_USER_NAME).setValue('Davi');
-    this.userData.get(CONSTANTS.FIELD_USER_NICKNAME).setValue('davsire');
+    this.userData.get(CONSTANTS.FIELD_USER_USERNAME).setValue('davsire');
   }
 }

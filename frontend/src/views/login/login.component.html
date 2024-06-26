@@ -1,15 +1,30 @@
 <div id="login-page">
-  <p-card header="Login" styleClass="login-form p-2">
+  <p-card header="Login"
+          styleClass="login-form p-2"
+          [formGroup]="userData"
+  >
     <div class="row mb-2">
       <div class="col">
         <label class="d-block">Usuário</label>
-        <input pInputText type="text" class="w-100">
+        <input [formControlName]="fieldUsername"
+               pInputText
+               type="text"
+               class="w-100">
       </div>
     </div>
     <div class="row mb-3">
       <div class="col">
         <label class="d-block">Senha</label>
-        <input pInputText type="password" class="w-100">
+        <span class="p-input-icon-right w-100">
+          <i class="pi"
+            [class]="showPassword ? 'pi-eye-slash' : 'pi-eye'"
+            (click)="togglePasswordVisibility()"
+          ></i>
+          <input [formControlName]="fieldPassword"
+                 pInputText
+                 [type]="showPassword ? 'text' : 'password'"
+                 class="w-100">
+        </span>
       </div>
     </div>
     <div class="row">

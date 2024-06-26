@@ -14,7 +14,7 @@ export class UserDataComponent implements OnInit {
   @Output() userDataChange = new EventEmitter<FormGroup>();
 
   readonly fieldName = CONSTANTS.FIELD_USER_NAME;
-  readonly fieldNickName = CONSTANTS.FIELD_USER_NICKNAME;
+  readonly fieldUsername = CONSTANTS.FIELD_USER_USERNAME;
   readonly fieldPassword = CONSTANTS.FIELD_USER_PASSWORD;
   readonly fieldConfirmPassword = CONSTANTS.FIELD_USER_CONFIRM_PASSWORD;
 
@@ -41,7 +41,7 @@ export class UserDataComponent implements OnInit {
     if (this.userData) return;
     this.userData = this.formBuilder.group({
       [this.fieldName]: [{value: null, disabled: this._disableFields}, Validators.required],
-      [this.fieldNickName]: [{value: null, disabled: this._disableFields}, Validators.required],
+      [this.fieldUsername]: [{value: null, disabled: this._disableFields}, Validators.required],
       [this.fieldPassword]: [{value: null, disabled: this._disableFields}, [this.passwordRequiredValidator.bind(this), this.passwordValidator.bind(this)]],
       [this.fieldConfirmPassword]: [{value: null, disabled: this._disableFields}, [this.passwordRequiredValidator.bind(this), this.confirmPasswordValidator.bind(this)]],
     });
