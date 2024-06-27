@@ -16,7 +16,7 @@ export class DataTableComponent implements OnInit {
 
   readonly paginatorFirst: number = 0;
   readonly paginatorRows: number = 2;
-  readonly paginatorRowsPerPageOptions: number[] = [1, 2, 5];
+  readonly paginatorRowsPerPageOptions: number[] = [2, 5, 10];
 
   paginatedItems: any[] = [];
   isMobile = false;

@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
-  styleUrls: ['./app.component.css']
+  template: `
+    <ng-container>
+      <p-messages></p-messages>
+      <router-outlet></router-outlet>
+    </ng-container>
+  `,
+  styleUrls: ['./app.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
 

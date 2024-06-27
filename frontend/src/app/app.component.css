@@ -1,0 +1,9 @@
+.p-message {
+  position: fixed;
+  bottom: 0;
+  margin: 20px;
+}
+
+.p-message-detail {
+  padding: 0 20px;
+}

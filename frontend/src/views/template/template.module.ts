@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { TooltipModule } from 'primeng/tooltip';
-import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TemplateComponent } from './template.component';
@@ -19,7 +18,6 @@ import { TemplateComponent } from './template.component';
     ButtonModule,
     MenuModule,
     TooltipModule,
-    MessagesModule,
     ConfirmDialogModule,
   ],
   providers: [
