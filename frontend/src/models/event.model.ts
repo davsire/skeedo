@@ -1,7 +1,7 @@
 import { EventStatus } from 'src/shared/constants';
 import { User } from './user.model';
 
-export class Event {
+export interface Event {
   _id: string;
   name: string;
   creator: User;
