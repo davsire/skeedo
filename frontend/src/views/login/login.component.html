@@ -29,7 +29,12 @@
     </div>
     <div class="row">
       <div class="col text-center">
-        <p-button styleClass="rounded">Entrar</p-button>
+        <p-button styleClass="rounded"
+                  [disabled]="this.userData.invalid"
+                  (click)="logIn()"
+        >
+          Entrar
+        </p-button>
       </div>
     </div>
     <div class="row mt-3">

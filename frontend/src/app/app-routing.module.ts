@@ -14,6 +14,7 @@ const routes: Routes = [
     path: ROUTES.index.path,
     component: TemplateComponent,
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
     children: [
       { path: ROUTES.index.path, redirectTo: ROUTES.home.path, pathMatch: 'full' },
       {
@@ -34,11 +35,13 @@ const routes: Routes = [
     path: ROUTES.login.path,
     component: LoginComponent,
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
   },
   {
     path: ROUTES.register.path,
     component: RegisterComponent,
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
   },
   {
     path: '**',

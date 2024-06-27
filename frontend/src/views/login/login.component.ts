@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserLogin } from 'src/models/user-login.model';
+import { AuthenticationService } from 'src/services/authentication.service';
 import { CONSTANTS } from 'src/shared/constants';
 import { ROUTES } from 'src/shared/routes';
 
@@ -18,10 +21,20 @@ export class LoginComponent implements OnInit {
   userData: FormGroup;
   showPassword = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+  ) {}
 
   public ngOnInit(): void {
     this.initUserData();
+  }
+
+  public logIn(): void {
+    this.authenticationService.logIn(this.getUserLogin()).subscribe(() => {
+      this.router.navigate([ROUTES.home.path]);
+    });
   }
 
   public togglePasswordVisibility(): void {
@@ -33,5 +46,12 @@ export class LoginComponent implements OnInit {
       [this.fieldUsername]: [null, Validators.required],
       [this.fieldPassword]: [null, Validators.required],
     });
+  }
+
+  private getUserLogin(): UserLogin {
+    return {
+      username: this.userData.get(this.fieldUsername).value,
+      password: this.userData.get(this.fieldPassword).value,
+    };
   }
 }

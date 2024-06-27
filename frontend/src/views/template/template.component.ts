@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, PrimeIcons } from 'primeng/api';
+import { AuthenticationService } from 'src/services/authentication.service';
 import { ROUTES } from 'src/shared/routes';
 
 @Component({
@@ -23,12 +24,22 @@ export class TemplateComponent {
     {
       label: 'Sair',
       icon: PrimeIcons.SIGN_OUT,
+      command: this.logOut.bind(this),
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+  ) {}
 
   public isCurrentRoute(route: string): boolean {
     return this.router.url.includes(route);
+  }
+
+  private logOut(): void {
+    this.authenticationService.logOut().subscribe(() => {
+      this.router.navigate([ROUTES.login.path]);
+    });
   }
 }
