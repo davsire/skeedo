@@ -13,9 +13,6 @@ export class User {
 
   @Prop()
   passwordHash: string;
-
-  @Prop()
-  salt: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
