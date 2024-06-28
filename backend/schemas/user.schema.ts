@@ -12,7 +12,7 @@ export class User {
   displayName: string;
 
   @Prop()
-  passwordHash: number;
+  passwordHash: string;
 
   @Prop()
   salt: string;
