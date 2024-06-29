@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
     this.initUserData();
   }
 
-  public logIn(): void {
-    this.authenticationService.logIn(this.getUserLogin()).subscribe(() => {
+  public signIn(): void {
+    this.authenticationService.signIn(this.getUserSignIn()).subscribe(() => {
       this.router.navigate([ROUTES.home.path]);
     });
   }
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private getUserLogin(): UserLogin {
+  private getUserSignIn(): UserLogin {
     return {
       username: this.userData.get(this.fieldUsername).value,
       password: this.userData.get(this.fieldPassword).value,

@@ -24,7 +24,7 @@ export class TemplateComponent {
     {
       label: 'Sair',
       icon: PrimeIcons.SIGN_OUT,
-      command: this.logOut.bind(this),
+      command: this.signOut.bind(this),
     },
   ];
 
@@ -37,9 +37,8 @@ export class TemplateComponent {
     return this.router.url.includes(route);
   }
 
-  private logOut(): void {
-    this.authenticationService.logOut().subscribe(() => {
-      this.router.navigate([ROUTES.login.path]);
-    });
+  private signOut(): void {
+    this.authenticationService.signOut();
+    this.router.navigate([ROUTES.login.path]);
   }
 }
