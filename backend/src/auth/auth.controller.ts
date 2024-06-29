@@ -4,7 +4,7 @@ import { User } from 'schemas/user.schema';
 import { userSignInDto } from 'src/domain/dto/userSignIn.dto';
 import { UserSignUpDto } from 'src/domain/dto/userSignUp.dto';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

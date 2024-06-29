@@ -17,9 +17,12 @@ export class AuthService {
     // get user from db
     const users = await this.userModel.find({username: userSignInDto.username}).exec();
     const user = users[0];
+    if (user === undefined) {
+      throw new UnauthorizedException();
+    }
 
     // authenticate
-    const isMatch = await bcrypt.compare(userSignInDto.password, user?.passwordHash)
+    const isMatch = await bcrypt.compare(userSignInDto.password, user.passwordHash)
     if (!isMatch) {
       throw new UnauthorizedException();
     }
@@ -38,8 +41,7 @@ export class AuthService {
     }
 
     // hash password
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(userSignUpDto.password, salt);
+    const passwordHash = await bcrypt.hash(userSignUpDto.password, 2);
 
     // create user in db
     const user = await new this.userModel({

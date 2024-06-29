@@ -3,9 +3,8 @@ import { MongoClient } from 'mongodb';
 
 @Injectable()
 export class AppService {
-  db = MongoClient.connect(process.env.MONGO_HOST)
   getHello(): string {
-    
+    console.log(process.env)
     return 'Hello World!';
   }
 }
