@@ -1,0 +1,35 @@
+<ng-container>
+  <p-confirmDialog styleClass="mx-3"></p-confirmDialog>
+  <nav class="app-navigation p-2 p-sm-3">
+    <p-button icon="pi pi-home"
+              pTooltip="Home"
+              [rounded]="true"
+              [styleClass]="'app-nav-button' + (isCurrentRoute(homePath) ? ' border border-3' : '')"
+              [routerLink]="homePath"
+    ></p-button>
+    <span class="fs-5">Nome legal (ou logo)</span>
+    <div>
+      <p-button icon="pi pi-envelope"
+                pTooltip="Seus convites"
+                tooltipPosition="left"
+                [rounded]="true"
+                [styleClass]="'app-nav-button me-1' + (isCurrentRoute(invitesPath) ? ' border border-3' : '')"
+                [routerLink]="invitesPath"
+      ></p-button>
+      <p-button icon="pi pi-user"
+                pTooltip="Seu perfil"
+                tooltipPosition="left"
+                [rounded]="true"
+                [styleClass]="'app-nav-button' + (isCurrentRoute(profilePath) ? ' border border-3' : '')"
+                (click)="menu.toggle($event)"
+      ></p-button>
+    </div>
+  </nav>
+  <main class="app-template p-3 p-sm-4">
+    <router-outlet></router-outlet>
+  </main>
+  <p-menu #menu
+          [model]="userMenuItems"
+          [popup]="true"
+  ></p-menu>
+</ng-container>

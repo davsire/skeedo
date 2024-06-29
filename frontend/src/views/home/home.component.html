@@ -1,0 +1,60 @@
+<p-card styleClass="p-2">
+  <app-event-modal></app-event-modal>
+  <app-data-table [items]="events"
+                  [tableHeader]="header"
+                  [tableContent]="content"
+                  emptyMessage="Você não possui eventos marcados..."
+  ></app-data-table>
+
+  <ng-template #header>
+    <tr class="d-none d-sm-table-row">
+      <th *ngFor="let column of columns">{{column}}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #content let-item>
+    <tr class="d-none d-sm-table-row">
+      <td>
+        <span>{{item.name}}</span>
+      </td>
+      <td>
+        <span>{{item.eventDate | date: 'dd/MM/yyyy'}}</span>
+      </td>
+      <td>
+        <span [pTooltip]="item[participantsNameFullField]">
+          {{item[participantsNameField]}}
+        </span>
+      </td>
+      <td class="text-end">
+        <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+      </td>
+    </tr>
+
+    <tr class="d-table-row d-sm-none">
+      <td>
+        <div class="row">
+          <div class="col-9">
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Nome do evento</small>
+              <span>{{item.name}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Data do evento</small>
+              <span>{{item.eventDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Participantes</small>
+              <span [pTooltip]="item[participantsNameFullField]">
+                {{item[participantsNameField]}}
+              </span>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-card>

@@ -1,0 +1,10 @@
+<p-button icon="pi pi-ellipsis-v"
+          (click)="menu.toggle($event)"
+></p-button>
+
+<p-menu #menu
+        [model]="_menuModel"
+        [popup]="true"
+        [style]="{width: 'fit-content'}"
+        appendTo="body"
+></p-menu>
