@@ -13,6 +13,7 @@ export class DataTableComponent implements OnInit {
   @Input() items: any[] = [];
   @Input() tableHeader: TemplateRef<any>;
   @Input() tableContent: TemplateRef<any>;
+  @Input() emptyMessage = 'Você não possui registros nessa listagem...';
 
   readonly paginatorFirst: number = 0;
   readonly paginatorRows: number = 2;

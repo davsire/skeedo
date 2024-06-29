@@ -22,6 +22,7 @@
   <app-data-table [items]="invitesReceived"
                   [tableHeader]="invitesReceivedHeader"
                   [tableContent]="invitesReceivedContent"
+                  emptyMessage="Você não possui convites pendentes para responder..."
   ></app-data-table>
 
   <ng-template #invitesReceivedHeader>
@@ -77,6 +78,7 @@
   <app-data-table [items]="invitesSent"
                   [tableHeader]="invitesSentHeader"
                   [tableContent]="invitesSentContent"
+                  emptyMessage="Você não possui convites aguardando resposta..."
   ></app-data-table>
 
   <ng-template #invitesSentHeader>
