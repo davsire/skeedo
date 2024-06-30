@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { User } from 'src/models/user.model';
 import { NotificationService } from 'src/services/notification.service';
+import { SessionService } from 'src/services/session.service';
+import { UserService } from 'src/services/user.service';
 import { CONSTANTS } from 'src/shared/constants';
 
 @Component({
@@ -14,7 +17,11 @@ export class ProfileComponent implements AfterViewInit {
   userData: FormGroup;
   isEdition = false;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private userService: UserService,
+    private sessionService: SessionService,
+  ) {}
 
   public ngAfterViewInit(): void {
     this.getUserData();
@@ -31,14 +38,24 @@ export class ProfileComponent implements AfterViewInit {
   }
 
   public updateUser(): void {
-    console.log(this.userData.getRawValue()); // @TODO: replace this mock to a call to update user endpoint
-    this.notificationService.success('Cadastro atualizado com sucesso!');
-    this.cancelEdit();
+    this.userService.updateUserById(this.sessionService.getUserId(), this.getUserUpdateData()).subscribe(() => {
+      this.notificationService.success('Cadastro atualizado com sucesso!');
+      this.cancelEdit();
+    });
   }
 
   private getUserData(): void {
-    // @TODO: replace this mock to a call to get user data endpoint
-    this.userData.get(CONSTANTS.FIELD_USER_NAME).setValue('Davi');
-    this.userData.get(CONSTANTS.FIELD_USER_USERNAME).setValue('davsire');
+    this.userService.getUserById(this.sessionService.getUserId()).subscribe((user: User) => {
+      this.userData.get(CONSTANTS.FIELD_USER_NAME).setValue(user.displayName);
+      this.userData.get(CONSTANTS.FIELD_USER_USERNAME).setValue(user.username);
+    });
+  }
+
+  private getUserUpdateData(): User {
+    return {
+      displayName: this.userData.get(CONSTANTS.FIELD_USER_NAME).value,
+      username: this.userData.get(CONSTANTS.FIELD_USER_USERNAME).value,
+      password: this.userData.get(CONSTANTS.FIELD_USER_PASSWORD).value,
+    };
   }
 }

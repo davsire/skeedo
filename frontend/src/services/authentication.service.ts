@@ -15,20 +15,27 @@ export class AuthenticationService {
   constructor(private apiService: ApiService, private sessionService: SessionService) { }
 
   public isAuthenticated(): boolean {
-    return !!this.sessionService.getToken();
+    return !!this.sessionService.getToken() && !!this.sessionService.getUserId();
   }
 
   public signIn(userLogin: UserLogin): Observable<void> {
     return this.apiService.post<AuthRes>(this.pathSignIn, userLogin)
-      .pipe(map((res: AuthRes) => this.sessionService.setToken(res.access_token)));
+      .pipe(map((res: AuthRes) => { 
+        this.sessionService.setToken(res.access_token);
+        this.sessionService.setUserId(res.user_id);
+      }));
   }
 
   public signUp(user: User): Observable<void> {
     return this.apiService.post<AuthRes>(this.pathSignUp, user)
-      .pipe(map((res: AuthRes) => this.sessionService.setToken(res.access_token)));
+      .pipe(map((res: AuthRes) => { 
+        this.sessionService.setToken(res.access_token);
+        this.sessionService.setUserId(res.user_id);
+      }));
   }
 
   public signOut(): void {
     this.sessionService.setToken(null);
+    this.sessionService.setUserId(null);
   }
 }

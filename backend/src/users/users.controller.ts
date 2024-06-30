@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { UserUpdateDto } from './dto/userUpdate.dto';
 
 @Controller('users')
 export class UsersController {
@@ -32,7 +32,7 @@ export class UsersController {
   @Patch(':id')
   modify(
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UserUpdateDto,
     @Request() req,
   ) {
     return this.userService.update(id, updateUserDto, req.user);

@@ -34,6 +34,11 @@ export class ApiService {
     return this.httpClient.put<T>(`${ApiService.BASE_URL}${path}`, JSON.stringify(data), options);
   }
 
+  public patch<T>(path: string, data: any): Observable<T> {
+    const options = this.getRequestOptions(path);
+    return this.httpClient.patch<T>(`${ApiService.BASE_URL}${path}`, JSON.stringify(data), options);
+  }
+
   public delete<T>(path: string): Observable<T> {
     const options = this.getRequestOptions(path);
     return this.httpClient.delete<T>(`${ApiService.BASE_URL}${path}`, options);
@@ -53,7 +58,6 @@ export class ApiService {
     if (path.includes('signin') || path.includes('signup')) {
       return headers;
     }
-    headers.set('Authorization', `Bearer ${this.sessionService.getToken()}`);
-    return headers;
+    return headers.set('Authorization', `Bearer ${this.sessionService.getToken()}`);
   }
 }

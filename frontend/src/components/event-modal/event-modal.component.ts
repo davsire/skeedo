@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { User } from 'src/models/user.model';
 import { NotificationService } from 'src/services/notification.service';
+import { UserService } from 'src/services/user.service';
 import { CONSTANTS } from 'src/shared/constants';
 
 @Component({
@@ -25,27 +26,16 @@ export class EventModalComponent implements OnInit {
 
   eventData: FormGroup;
   modalVisible = false;
-  users: User[] = [
-    {
-      displayName: 'Davi',
-      username: 'davsire',
-    } as User,
-    {
-      displayName: 'Leonardo',
-      username: 'leoniro',
-    } as User,
-    {
-      displayName: 'Gabriel',
-      username: 'cruzeiroEC'
-    } as User,
-  ]; // @TODO: replace this mock to a call to get users endpoint
+  users: User[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    private userService: UserService,
   ) {}
 
   public ngOnInit(): void {
+    this.getUsers();
     this.initEventData();
   }
 
@@ -66,6 +56,12 @@ export class EventModalComponent implements OnInit {
     console.log(this.eventData.getRawValue()); // @TODO: replace this mock to a call to create event endpoint
     this.notificationService.success('Evento cadastrado com sucesso!');
     this.closeModal();
+  }
+
+  private getUsers(): void {
+    this.userService.getAllUsers().subscribe((users: User[]) => {
+      this.users = users;
+    });
   }
 
   private initEventData(): void {
