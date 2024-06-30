@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { InvitesService } from 'src/invites/invites.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
+import { SettleEventDto } from './dto/settleEvent.dto';
 
 @Injectable()
 export class EventsService {
@@ -85,10 +86,10 @@ export class EventsService {
     }
   }
 
-  async remove(id: string, user) {
+  async remove(id: string, token) {
     try {
       const event = await this.eventModel.findById(id);
-      if (event.creator.toString() !== user.sub) {
+      if (event.creator.toString() !== token.sub) {
         throw new UnauthorizedException();
       }
 
@@ -96,5 +97,13 @@ export class EventsService {
     } catch {
       throw new NotFoundException();
     }
+  }
+
+  async dateOptions(id: string, token) {
+
+  }
+
+  async settleDate(id:string, settleEventDto: SettleEventDto, token) {
+
   }
 }
