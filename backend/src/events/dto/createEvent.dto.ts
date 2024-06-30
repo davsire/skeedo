@@ -1,5 +1,4 @@
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
-import { User } from "schemas/user.schema";
+import { IsDateString, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateEventDto {
   @IsNotEmpty()
@@ -7,13 +6,10 @@ export class CreateEventDto {
   name: string;
 
   @IsNotEmpty()
-  creator: User;
-
-  @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   beginDate: Date;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   endDate: Date;  
 }

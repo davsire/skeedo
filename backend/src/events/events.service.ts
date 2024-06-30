@@ -1,37 +1,70 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
-import { Event } from 'schemas/event.schema';
+import { Event, EventStatus } from 'schemas/event.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { after } from 'node:test';
 
 @Injectable()
 export class EventsService {
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
 
   async create(createEventDto: CreateEventDto, user) {
-    createEventDto.creator = user.username;
     return await new this.eventModel({
       ...createEventDto,
+      creator: user.sub,
+      status: EventStatus.WAITING_RESPONSES,
     }).save();
 
   }
 
-  findAll(user) {
-    return this.eventModel.find();
+  async findAll(user) {
+    return await this.eventModel.find({creator: user.sub});
   }
 
-  findOne(id: number, user) {
-    const event = this.eventModel.findById(id);
-    // check if user should have access to this event
-    return event;
+  async findOne(id: string, user) {
+    try {
+      const event = await this.eventModel.findById(id);
+      if (event.creator.toString() !== user.sub) {
+        throw new UnauthorizedException();
+      }
+      return event;
+    }
+    catch {
+      throw new NotFoundException();
+    }
   }
 
-  update(id: number, updateEventDto: UpdateEventDto, user) {
-    return `This action updates a #${id} event`;
+  async update(id: string, updateEventDto: UpdateEventDto, user) {
+    try {
+      const event = await this.eventModel.findById(id);
+      if (event.creator.toString() !== user.sub) {
+        throw new UnauthorizedException();
+      }
+      
+      return await this.eventModel.findByIdAndUpdate(
+        id,
+        {name: updateEventDto.name},
+        {returnDocument: "after"}
+      );
+    }
+    catch {
+      throw new NotFoundException();
+    }
   }
 
-  remove(id: number, user) {
-    return `This action removes a #${id} event`;
+  async remove(id: string, user) {
+    try {
+      const event = await this.eventModel.findById(id);
+      if (event.creator.toString() !== user.sub) {
+        throw new UnauthorizedException();
+      }
+      
+      return await this.eventModel.findByIdAndDelete(id);
+    }
+    catch {
+      throw new NotFoundException();
+    }
   }
 }

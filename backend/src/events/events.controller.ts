@@ -23,18 +23,19 @@ export class EventsController {
   @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req) {
-    return this.eventsService.findOne(+id, req.user);
+    return this.eventsService.findOne(id, req.user);
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto, @Request() req) {
-    return this.eventsService.update(+id, updateEventDto, req.user);
+    console.log(updateEventDto)
+    return this.eventsService.update(id, updateEventDto, req.user);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @Request() req) {
-    return this.eventsService.remove(+id, req.user);
+    return this.eventsService.remove(id, req.user);
   }
 }
