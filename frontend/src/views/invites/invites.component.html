@@ -1,5 +1,5 @@
 <p-card styleClass="p-2">
-  <app-event-modal></app-event-modal>
+  <app-event-modal (eventCreated)="getInvitesSent()"></app-event-modal>
   <p-tabView styleClass="mt-2">
     <p-tabPanel header="Convites recebidos">
       <ng-template pTemplate="header">
@@ -136,4 +136,6 @@
   </ng-template>
 </ng-template>
 
-<app-respond-invite [openRespondInvite]="openRespondInvite"></app-respond-invite>
+<app-respond-invite [openRespondInvite]="openRespondInvite"
+                    (inviteResponded)="getInvitesReceived()"
+></app-respond-invite>

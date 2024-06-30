@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -20,6 +20,8 @@ import { CONSTANTS } from 'src/shared/constants';
   styleUrls: ['./event-modal.component.css']
 })
 export class EventModalComponent implements OnInit {
+
+  @Output() eventCreated = new EventEmitter<void>();
 
   readonly fieldEventName = CONSTANTS.FIELD_EVENT_NAME;
   readonly fieldDateRange = CONSTANTS.FIELD_DATE_RANGE;
@@ -60,6 +62,7 @@ export class EventModalComponent implements OnInit {
   public createEvent(): void {
     this.eventService.createEvent(this.getEventData()).subscribe(() => {
       this.notificationService.success('Evento cadastrado com sucesso!');
+      this.eventCreated.next();
       this.closeModal();
     });
   }
