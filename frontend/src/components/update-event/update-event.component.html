@@ -1,0 +1,22 @@
+<p-dialog header="Editar evento"
+          [modal]="true"
+          [(visible)]="modalVisible"
+          [style]="{ width: 'min(600px, 80vw)' }"
+          (onHide)="clearUpdateEventData()"
+>
+  <ng-container [formGroup]="updateEventData">
+  </ng-container>
+  <ng-template pTemplate="footer">
+    <p-button severity="danger"
+              [text]="true"
+              (click)="closeModal()"
+    >
+      Cancelar
+    </p-button>
+    <p-button [disabled]="!updateEventData.valid"
+              (click)="updateEvent()"
+    >
+      Editar evento
+    </p-button>
+  </ng-template>
+</p-dialog>
