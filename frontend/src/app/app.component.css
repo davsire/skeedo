@@ -7,3 +7,8 @@
 .p-message-detail {
   padding: 0 20px;
 }
+
+.app-name {
+  font-family: 'Playwrite US Modern';
+  color: white;
+}

@@ -26,4 +26,8 @@ export class EventService {
   public createEvent(eventData: Event): Observable<Event> {
     return this.apiService.post<Event>(this.pathBase, eventData);
   }
+
+  public deleteEvent(eventId): Observable<void> {
+    return this.apiService.delete<void>(this.pathBase + '/' + eventId);
+  }
 }

@@ -1,4 +1,5 @@
-# Gerenciador de agenda/compromissos
+# Skeedo
+*Aplicativo para convidar e marcar eventos*
 
 ## Integrantes
 
