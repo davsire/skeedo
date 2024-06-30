@@ -149,12 +149,12 @@ export class EventsService {
     const invites = await this.inviteModel.find({
       event: id,
       responded: true,
-    }).exec()
-    
+    }).populate('user').exec()
+
     for (let i in invites) {
       for (let j in invites[i].availableDays) {
         let idx = result.findIndex(x => x.date == invites[i].availableDays[j]);
-        result[idx].available.push(invites[i].user.toString())
+        result[idx].available.push(invites[i].user)
       }
     }
     return result;
