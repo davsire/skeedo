@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getEvents(): void {
+    this.events = null;
     this.eventService.getClosedEvents().subscribe((events: Event[]) => {
       this.events = events;
       this.events.forEach(this.mapEventFields.bind(this));
@@ -62,7 +63,7 @@ export class HomeComponent implements OnInit {
       },
       {
         title: 'Cancelar evento',
-        action: this.deleteEvent.bind(this, event._id),
+        action: this.confirmDeleteEvent.bind(this, event._id),
         icon: PrimeIcons.TRASH,
       },
     ];
@@ -72,13 +73,20 @@ export class HomeComponent implements OnInit {
     this.notificationService.success('Evento alterado com sucesso!');
   }
 
-  private deleteEvent(eventId: string): void {
+  private confirmDeleteEvent(eventId: string): void {
     this.confirmationService.confirm({
       header: 'Cancelar evento',
       message: 'Tem certeza que deseja cancelar esse evento?',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
-      accept: () => this.notificationService.success('Evento cancelado com sucesso!'),
+      accept: () => this.deleteEvent(eventId),
+    });
+  }
+
+  private deleteEvent(eventId: string) {
+    this.eventService.deleteEvent(eventId).subscribe(() => {
+      this.notificationService.success('Evento cancelado com sucesso!');
+      this.getEvents();
     });
   }
 }

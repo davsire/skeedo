@@ -39,7 +39,8 @@ export class InvitesComponent implements OnInit {
     this.getInvitesReceived();
   }
 
-  private getInvitesSent(): void {
+  public getInvitesSent(): void {
+    this.invitesSent = null;
     this.eventService.getWaitingResponsesEvents().subscribe((events: Event[]) => {
       this.invitesSent = events;
       this.invitesSent.forEach(invite => this.mapEventFields(invite));
@@ -47,6 +48,7 @@ export class InvitesComponent implements OnInit {
   }
 
   private getInvitesReceived(): void {
+    this.invitesReceived = null;
     this.inviteService.getPendingInvites().subscribe((invites: Invite[]) => {
       this.invitesReceived = invites;
       this.invitesReceived.forEach(invite => this.mapInviteFields(invite));
@@ -86,7 +88,7 @@ export class InvitesComponent implements OnInit {
       },
       {
         title: 'Cancelar convite',
-        action: this.deleteInvite.bind(this, invite._id),
+        action: this.confirmDeleteEvent.bind(this, invite._id),
         icon: PrimeIcons.TRASH,
       },
     ];
@@ -106,13 +108,20 @@ export class InvitesComponent implements OnInit {
     this.notificationService.success('Convite alterado com sucesso!');
   }
 
-  private deleteInvite(inviteId: string): void {
+  private confirmDeleteEvent(eventId: string): void {
     this.confirmationService.confirm({
       header: 'Cancelar convite',
       message: 'Tem certeza que deseja cancelar esse convite?',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
-      accept: () => this.notificationService.success('Convite cancelado com sucesso!'),
+      accept: () => this.deleteEvent(eventId),
+    });
+  }
+
+  private deleteEvent(eventId: string) {
+    this.eventService.deleteEvent(eventId).subscribe(() => {
+      this.notificationService.success('Convite cancelado com sucesso!');
+      this.getInvitesSent();
     });
   }
 }
