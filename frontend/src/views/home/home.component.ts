@@ -69,7 +69,10 @@ export class HomeComponent implements OnInit {
   }
 
   private updateEvent(event: Event): void {
-    this.notificationService.success('Evento alterado com sucesso!');
+    const updatedEvent = { ...event };
+    this.eventService.update(updatedEvent).subscribe( () => {
+      this.notificationService.success('Evento alterado com sucesso!');
+    });
   }
 
   private deleteEvent(eventId: string): void {

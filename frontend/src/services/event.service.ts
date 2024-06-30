@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class EventService {
 
+
   readonly pathBase = 'events';
   readonly pathClosedEvents = this.pathBase + '/closed';
   readonly pathWaitingResponseEvents = this.pathBase + '/waiting-responses';
