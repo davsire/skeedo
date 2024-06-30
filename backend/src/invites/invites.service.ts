@@ -1,4 +1,9 @@
-import { HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateInviteDto } from './dto/createInvite.dto';
 import { UpdateInviteDto } from './dto/updateInvite.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,7 +17,7 @@ export class InvitesService {
   constructor(
     @InjectModel(Invite.name) private inviteModel: Model<Invite>,
     @InjectModel(Event.name) private eventModel: Model<Event>,
-    @InjectModel(User.name) private userModel: Model<User>
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
   async create(createInviteDto: CreateInviteDto, token) {
@@ -23,34 +28,37 @@ export class InvitesService {
         throw new UnauthorizedException();
       }
 
-      const alreadyExists = await this.inviteModel.find({
-        user: createInviteDto.user,
-        event: createInviteDto.event
-      }).exec();
+      const alreadyExists = await this.inviteModel
+        .find({
+          user: createInviteDto.user,
+          event: createInviteDto.event,
+        })
+        .exec();
       if (alreadyExists.length > 0) {
-        throw new HttpException("Usuário já convidado para o evento", 400)
+        throw new HttpException('Usuário já convidado para o evento', 400);
       }
 
       event.participants.push(user);
       await this.eventModel.findByIdAndUpdate(createInviteDto.event, event);
       return await new this.inviteModel({
         ...createInviteDto,
-        responded: false
+        responded: false,
       }).save();
-
     } catch (err) {
       if (err.status == 400) {
         throw err;
-      };
+      }
       throw new NotFoundException();
     }
   }
 
   async findAll(token) {
-    const invites = await this.inviteModel.find({
-      user: token.sub
-    }).exec();
-    return invites
+    const invites = await this.inviteModel
+      .find({
+        user: token.sub,
+      })
+      .exec();
+    return invites;
   }
 
   findOne(id: string, token) {
@@ -73,7 +81,9 @@ export class InvitesService {
       }
       invite.availableDays = updateInviteDto.availableDays;
       invite.responded = true;
-      return await this.inviteModel.findByIdAndUpdate(id, invite, {returnDocument: 'after'});
+      return await this.inviteModel.findByIdAndUpdate(id, invite, {
+        returnDocument: 'after',
+      });
     } catch {
       throw new NotFoundException();
     }
@@ -85,8 +95,10 @@ export class InvitesService {
       if (invite.user.toString() !== token.sub) {
         throw new UnauthorizedException();
       }
-      
-      return await this.inviteModel.findByIdAndDelete(id, {returnDocument: 'after'});
+
+      return await this.inviteModel.findByIdAndDelete(id, {
+        returnDocument: 'after',
+      });
     } catch {
       throw new NotFoundException();
     }
