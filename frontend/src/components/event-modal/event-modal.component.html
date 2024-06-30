@@ -1,0 +1,71 @@
+<p-button (click)="openModal()">
+  <i class="pi pi-calendar-plus me-2"></i>
+  Novo evento
+</p-button>
+
+<p-dialog header="Criar novo evento"
+          [modal]="true"
+          [(visible)]="modalVisible"
+          [style]="{ width: 'min(600px, 80vw)' }"
+          (onHide)="clearEventData()"
+>
+  <ng-container [formGroup]="eventData">
+    <div class="row mb-3">
+      <div class="col-12">
+        <label class="d-block">Nome do evento</label>
+        <input [formControlName]="fieldEventName"
+               type="text"
+               pInputText
+               class="w-100">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-6 mb-3 mb-sm-0">
+        <label class="d-block">Período para marcar evento</label>
+        <p-calendar [formControlName]="fieldDateRange"
+                    [minDate]="today"
+                    selectionMode="range"
+                    dateFormat="dd/mm/yy"
+                    styleClass="w-100"
+                    appendTo="body"
+        ></p-calendar>
+        <span *ngIf="eventData?.get(fieldDateRange).errors?.['notDateRange']"
+              class="text-danger"
+        >
+          Escolha um período de data!
+        </span>
+      </div>
+      <div class="col-12 col-sm-6">
+        <label class="d-block">Participantes</label>
+        <p-multiSelect [formControlName]="fieldParticipants"
+                       [options]="users"
+                       optionLabel="displayName"
+                       [filterFields]="searchFields"
+                       [maxSelectedLabels]="1"
+                       emptyMessage="Sem resultados"
+                       emptyFilterMessage="Sem resultados para a pesquisa"
+                       selectedItemsLabel="{0} participantes"
+                       styleClass="w-100"
+                       appendTo="body"
+        >
+          <ng-template let-user pTemplate="item">
+            <span>{{user.displayName}} ({{user.username}})</span>
+          </ng-template>
+        </p-multiSelect>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template pTemplate="footer">
+    <p-button severity="danger"
+              [text]="true"
+              (click)="closeModal()"
+    >
+      Cancelar
+    </p-button>
+    <p-button [disabled]="!eventData.valid"
+              (click)="createEvent()"
+    >
+      Criar evento
+    </p-button>
+  </ng-template>
+</p-dialog>

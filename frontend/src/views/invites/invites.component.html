@@ -1,0 +1,137 @@
+<p-card styleClass="p-2">
+  <app-event-modal></app-event-modal>
+  <p-tabView styleClass="mt-2">
+    <p-tabPanel header="Convites recebidos">
+      <ng-template pTemplate="header">
+        <i class="pi pi-download me-2"></i>
+        <span>Convites recebidos</span>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="invitesReceivedList"></ng-container>
+    </p-tabPanel>
+    <p-tabPanel header="Convites enviados">
+      <ng-template pTemplate="header">
+        <i class="pi pi-upload me-2"></i>
+        <span>Convites enviados</span>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="invitesSentList"></ng-container>
+    </p-tabPanel>
+  </p-tabView>
+</p-card>
+
+<ng-template #invitesReceivedList>
+  <app-data-table [items]="invitesReceived"
+                  [tableHeader]="invitesReceivedHeader"
+                  [tableContent]="invitesReceivedContent"
+                  emptyMessage="Você não possui convites pendentes para responder..."
+  ></app-data-table>
+
+  <ng-template #invitesReceivedHeader>
+    <tr class="d-none d-sm-table-row">
+      <th *ngFor="let column of columnsInvitesReceived">{{column}}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #invitesReceivedContent let-invite>
+    <tr class="d-none d-sm-table-row">
+      <td>
+        <span>{{invite.event.name}}</span>
+      </td>
+      <td>
+        <span>{{invite.event.beginDate | date: 'dd/MM/yyyy'}} - {{invite.event.endDate | date: 'dd/MM/yyyy'}}</span>
+      </td>
+      <td>
+        <span>{{invite.event.creator.displayName}}</span>
+      </td>
+      <td class="text-end">
+        <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
+      </td>
+    </tr>
+
+    <tr class="d-table-row d-sm-none">
+      <td>
+        <div class="row">
+          <div class="col-9">
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Nome do evento</small>
+              <span>{{invite.event.name}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Período para marcar evento</small>
+              <span>{{invite.event.beginDate | date: 'dd/MM/yyyy'}} - {{invite.event.endDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Criador</small>
+              <span>{{invite.event.creator.displayName}}</span>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</ng-template>
+
+<ng-template #invitesSentList>
+  <app-data-table [items]="invitesSent"
+                  [tableHeader]="invitesSentHeader"
+                  [tableContent]="invitesSentContent"
+                  emptyMessage="Você não possui convites aguardando resposta..."
+  ></app-data-table>
+
+  <ng-template #invitesSentHeader>
+    <tr class="d-none d-sm-table-row">
+      <th *ngFor="let column of columnsInvitesSent">{{column}}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #invitesSentContent let-invite>
+    <tr class="d-none d-sm-table-row">
+      <td>
+        <span>{{invite.name}}</span>
+      </td>
+      <td>
+        <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
+      </td>
+      <td>
+        <span [pTooltip]="invite[participantsNameFullField]">
+          {{invite[participantsNameField]}}
+        </span>
+      </td>
+      <td class="text-end">
+        <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
+      </td>
+    </tr>
+
+    <tr class="d-table-row d-sm-none">
+      <td>
+        <div class="row">
+          <div class="col-9">
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Nome do evento</small>
+              <span>{{invite.name}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Período para marcar evento</small>
+              <span>{{invite.beginDate | date: 'dd/MM/yyyy'}} - {{invite.endDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mb-2">
+              <small class="d-block fw-bold">Participantes</small>
+              <span [pTooltip]="invite[participantsNameFullField]">
+                {{invite[participantsNameField]}}
+              </span>
+            </div>
+          </div>
+          <div class="col-3 text-end">
+            <app-action-menu [menuActions]="invite[actionsField]"></app-action-menu>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</ng-template>
+
+<app-respond-invite [openRespondInvite]="openRespondInvite"></app-respond-invite>

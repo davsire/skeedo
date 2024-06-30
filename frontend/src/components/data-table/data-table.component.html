@@ -1,0 +1,31 @@
+<ng-container>
+  <p-table [value]="paginatedItems" styleClass="mt-3">
+    <ng-template *ngIf="paginatedItems?.length" pTemplate="header">
+      <ng-container *ngTemplateOutlet="tableHeader"></ng-container>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <ng-container *ngTemplateOutlet="tableContent; context: {$implicit: item}"></ng-container>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <div class="d-flex flex-column align-items-center my-3">
+        <img src="../../assets/wind.png"
+             width="80px"
+             class="mb-3"
+             alt="empty-list-image">
+        <span class="text-center">
+          {{emptyMessage}}
+        </span>
+      </div>
+    </ng-template>
+  </p-table>
+  <p-paginator [first]="paginatorFirst"
+               [rows]="paginatorRows"
+               [totalRecords]="items.length"
+               [rowsPerPageOptions]="paginatorRowsPerPageOptions"
+               [showPageLinks]="!isMobile"
+               [showFirstLastIcon]="!isMobile"
+               [showCurrentPageReport]="isMobile"
+               currentPageReportTemplate="{first} - {last} de {totalRecords}"
+               (onPageChange)="onPageChange($event)" 
+  ></p-paginator>
+</ng-container>

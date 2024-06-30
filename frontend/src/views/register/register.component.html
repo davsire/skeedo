@@ -1,0 +1,20 @@
+<div id="register-page">
+  <p-card header="Cadastro" styleClass="register-form p-2">
+    <app-user-data [(userData)]="userData"></app-user-data>
+    <div class="row">
+      <div class="col text-center">
+        <p-button [disabled]="!userData?.valid"
+                  styleClass="rounded"
+                  (click)="createUser()"
+        >
+          Cadastrar
+        </p-button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <small>Já possui uma conta? Faça <a [routerLink]="[loginPath]" class="login-here">login!</a></small>
+      </div>
+    </div>
+  </p-card>
+</div>
