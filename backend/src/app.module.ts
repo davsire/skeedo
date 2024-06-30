@@ -6,14 +6,16 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventsModule } from './events/events.module';
 import { InvitesModule } from './invites/invites.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/app'),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_HOST),
     AuthModule,
     UsersModule,
     EventsModule,
-    InvitesModule
+    InvitesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
