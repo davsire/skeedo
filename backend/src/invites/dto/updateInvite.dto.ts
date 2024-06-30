@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateInviteDto } from './createInvite.dto';
+import { IsArray, IsNotEmpty } from "class-validator";
 
-export class UpdateInviteDto extends PartialType(CreateInviteDto) {}
+export class UpdateInviteDto {
+    @IsNotEmpty()
+    @IsArray()
+    availableDays: Date[];
+}

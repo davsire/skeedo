@@ -6,8 +6,4 @@ export class CreateInviteDto {
 
     @IsNotEmpty()
     user: string;
-
-    @IsNotEmpty()
-    @IsBoolean()
-    responded: boolean;
 }

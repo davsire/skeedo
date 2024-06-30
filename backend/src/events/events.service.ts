@@ -19,8 +19,20 @@ export class EventsService {
 
   }
 
-  async findAll(user) {
-    return await this.eventModel.find({creator: user.sub});
+  async findAll(token) {
+    //return await this.eventModel.find({creator: user.sub});
+    const events = await this.eventModel.find().exec();
+    let result = [];
+    for (let i = 0; i < events.length; i++) {
+      if ( 
+        (events[i].participants.map((x) => x.toString()).indexOf(token.sub) > -1) 
+        || (events[i].creator.toString() == token.sub)
+      )
+        {
+        result.push(events[i]);
+      }
+    }
+    return result;
   }
 
   async findOne(id: string, user) {
