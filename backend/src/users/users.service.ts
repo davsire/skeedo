@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'schemas/user.schema';
@@ -20,8 +24,7 @@ export class UsersService {
     try {
       const user = await this.userModel.findById(id);
       return user;
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }
@@ -31,11 +34,11 @@ export class UsersService {
       if (id !== token.sub) {
         throw new UnauthorizedException();
       }
-      
+
       return await this.userModel.findByIdAndUpdate(
         id,
-        {displayName: updateUserDto.displayName},
-        {returnDocument: "after"}
+        { displayName: updateUserDto.displayName },
+        { returnDocument: 'after' },
       );
     } catch {
       throw new NotFoundException();
@@ -47,7 +50,7 @@ export class UsersService {
       if (id !== token.sub) {
         throw new UnauthorizedException();
       }
-      
+
       return await this.userModel.findByIdAndDelete(id);
     } catch {
       throw new NotFoundException();

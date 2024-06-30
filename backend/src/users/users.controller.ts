@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateUserDto } from './dto/updateUser.dto';
@@ -18,10 +27,14 @@ export class UsersController {
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
-  
+
   @UseGuards(AuthGuard)
   @Patch(':id')
-  modify(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
+  modify(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Request() req,
+  ) {
     return this.userService.update(id, updateUserDto, req.user);
   }
 
@@ -30,5 +43,4 @@ export class UsersController {
   remove(@Param('id') id: string, @Request() req) {
     return this.userService.remove(id, req.user);
   }
-
 }
