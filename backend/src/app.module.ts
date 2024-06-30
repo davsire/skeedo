@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
+import { InvitesModule } from './invites/invites.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { EventsModule } from './events/events.module';
     AuthModule,
     UsersModule,
     ConfigModule.forRoot(),
-    EventsModule
+    EventsModule,
+    InvitesModule
   ],
   controllers: [AppController],
   providers: [AppService],
