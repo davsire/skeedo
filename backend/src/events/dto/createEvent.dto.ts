@@ -1,4 +1,5 @@
-import { IsDateString, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import { User } from 'schemas/user.schema';
 
 export class CreateEventDto {
   @IsNotEmpty()
@@ -11,5 +12,9 @@ export class CreateEventDto {
 
   @IsNotEmpty()
   @IsDateString()
-  endDate: Date;  
+  endDate: Date;
+
+  @IsNotEmpty()
+  @IsArray()
+  participants: User[];
 }

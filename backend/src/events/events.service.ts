@@ -1,26 +1,59 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { CreateEventDto } from './dto/createEvent.dto';
-import { UpdateEventDto } from './dto/updateEvent.dto';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Event, EventStatus } from 'schemas/event.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { after } from 'node:test';
+import { InvitesService } from 'src/invites/invites.service';
+import { CreateEventDto } from './dto/createEvent.dto';
+import { UpdateEventDto } from './dto/updateEvent.dto';
 
 @Injectable()
 export class EventsService {
-  constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
+  constructor(
+    @InjectModel(Event.name) private eventModel: Model<Event>,
+    private readonly invitesService: InvitesService,
+  ) {}
 
   async create(createEventDto: CreateEventDto, user) {
-    return await new this.eventModel({
+    const event = await new this.eventModel({
       ...createEventDto,
       creator: user.sub,
       status: EventStatus.WAITING_RESPONSES,
     }).save();
 
+    for (const user of event.participants) {
+      this.invitesService.create({
+        event: event,
+        user: user,
+      });
+    }
+
+    return event;
   }
 
-  async findAll(user) {
-    return await this.eventModel.find({creator: user.sub});
+  async findAllClosed(token: any) {
+    return await this.eventModel
+      .find({
+        status: EventStatus.EVENT_CLOSED,
+        $or: [{ participants: token.sub }, { creator: token.sub }],
+      })
+      .populate('creator')
+      .populate('participants')
+      .exec();
+  }
+
+  async findAllWaitingResponses(token: any) {
+    return await this.eventModel
+      .find({
+        status: EventStatus.WAITING_RESPONSES,
+        creator: token.sub,
+      })
+      .populate('creator')
+      .populate('participants')
+      .exec();
   }
 
   async findOne(id: string, user) {
@@ -30,8 +63,7 @@ export class EventsService {
         throw new UnauthorizedException();
       }
       return event;
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }
@@ -42,14 +74,13 @@ export class EventsService {
       if (event.creator.toString() !== user.sub) {
         throw new UnauthorizedException();
       }
-      
+
       return await this.eventModel.findByIdAndUpdate(
         id,
-        {name: updateEventDto.name},
-        {returnDocument: "after"}
+        { name: updateEventDto.name },
+        { returnDocument: 'after' },
       );
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }
@@ -60,10 +91,9 @@ export class EventsService {
       if (event.creator.toString() !== user.sub) {
         throw new UnauthorizedException();
       }
-      
+
       return await this.eventModel.findByIdAndDelete(id);
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }

@@ -3,8 +3,8 @@ import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { ActionModel } from 'src/models/action.model';
 import { Event } from 'src/models/event.model';
 import { User } from 'src/models/user.model';
+import { EventService } from 'src/services/event.service';
 import { NotificationService } from 'src/services/notification.service';
-import { EventStatus } from 'src/shared/constants';
 
 @Component({
   selector: 'app-home',
@@ -19,98 +19,23 @@ export class HomeComponent implements OnInit {
   readonly participantsNameField = 'participantsNameField';
   readonly actionsField = 'actions';
 
-  events: Event[] = [
-    {
-      _id: '1',
-      name: 'Fazer trabalho',
-      creator: {
-        displayName: 'Pessoa A'
-      } as User,
-      status: EventStatus.EVENT_CLOSED,
-      beginDate: new Date('2024-06-01'),
-      endDate: new Date('2024-06-31'),
-      eventDate:  new Date('2024-06-01'),
-      participants: [
-        {
-          displayName: 'Davi'
-        } as User,
-        {
-          displayName: 'Leonardo'
-        } as User,
-        {
-          displayName: 'Gabriel'
-        } as User,
-      ],
-    },
-    {
-      _id: '2',
-      name: 'Sair para caminhar',
-      creator: {
-        displayName: 'Pessoa B'
-      } as User,
-      status: EventStatus.EVENT_CLOSED,
-      beginDate: new Date('2024-07-15'),
-      endDate: new Date('2024-07-18'),
-      eventDate: new Date('2024-07-17'),
-      participants: [
-        {
-          displayName: 'Alguém'
-        } as User,
-      ],
-    },
-    {
-      _id: '3',
-      name: 'Piquenique',
-      creator: {
-        displayName: 'Pessoa C'
-      } as User,
-      status: EventStatus.EVENT_CLOSED,
-      beginDate: new Date('2024-06-01'),
-      endDate: new Date('2024-07-31'),
-      eventDate: new Date('2024-06-20'),
-      participants: [
-        {
-          displayName: 'Fulano'
-        } as User,
-        {
-          displayName: 'Ciclano'
-        } as User,
-      ],
-    },
-    {
-      _id: '4',
-      name: 'Outro evento bacana',
-      creator: {
-        displayName: 'Pessoa D'
-      } as User,
-      status: EventStatus.EVENT_CLOSED,
-      beginDate: new Date('2024-06-01'),
-      endDate: new Date('2024-07-31'),
-      eventDate: new Date('2024-06-31'),
-      participants: [
-        {
-          displayName: 'ABC'
-        } as User,
-        {
-          displayName: 'DEF'
-        } as User,
-        {
-          displayName: 'GHI'
-        } as User,
-        {
-          displayName: 'JKL'
-        } as User,
-      ],
-    },
-  ]; // @TODO: replace this mock to a call to get events endpoint
+  events: Event[];
 
   constructor(
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
+    private eventService: EventService,
   ) {}
 
   public ngOnInit(): void {
-    this.events.forEach(this.mapEventFields.bind(this));
+    this.getEvents();
+  }
+
+  private getEvents(): void {
+    this.eventService.getClosedEvents().subscribe((events: Event[]) => {
+      this.events = events;
+      this.events.forEach(this.mapEventFields.bind(this));
+    });
   }
 
   private mapEventFields(invite: Event) {

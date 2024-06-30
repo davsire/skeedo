@@ -8,14 +8,16 @@ export type InviteDocument = HydratedDocument<Invite>;
 @Schema()
 export class Invite {
   @Prop({
-    required: true, 
-    type: mongoose.Schema.Types.ObjectId, ref: 'Event',
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event',
   })
   event: Event;
 
   @Prop({
-    required: true, 
-    type: mongoose.Schema.Types.ObjectId, ref: 'User',
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   })
   user: User;
 
