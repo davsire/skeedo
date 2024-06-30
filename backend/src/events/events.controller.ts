@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Req } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
@@ -10,31 +10,31 @@ export class EventsController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto);
+  create(@Body() createEventDto: CreateEventDto, @Request() req) {
+    return this.eventsService.create(createEventDto, req.user);
   }
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.eventsService.findAll();
+  findAll(@Request() req) {
+    return this.eventsService.findAll(req.user);
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventsService.findOne(+id);
+  findOne(@Param('id') id: string, @Request() req) {
+    return this.eventsService.findOne(+id, req.user);
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventsService.update(+id, updateEventDto);
+  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto, @Request() req) {
+    return this.eventsService.update(+id, updateEventDto, req.user);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id);
+  remove(@Param('id') id: string, @Request() req) {
+    return this.eventsService.remove(+id, req.user);
   }
 }
