@@ -1,4 +1,4 @@
-# Gerenciador de agenda/compromissos
+# Aplicativo para convidar e marcar eventos
 
 ## Integrantes
 
