@@ -1,4 +1,5 @@
-# Aplicativo para convidar e marcar eventos
+# Skeedo
+*Aplicativo para convidar e marcar eventos*
 
 ## Integrantes
 
