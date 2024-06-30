@@ -1,0 +1,18 @@
+span:has(> span.best-day),
+.best-day {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+span.p-highlight:has(> span.best-day),
+span.p-highlight .best-day {
+  background-color: #B5B7FB;
+}
+
+.color-subtitle {
+  display: inline-block;
+  background-color: var(--primary-color);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}

@@ -23,6 +23,7 @@ export class InvitesComponent implements OnInit {
   readonly actionsField = 'actions';
 
   openRespondInvite = new Subject<Invite>();
+  openScheduleEvent = new Subject<Event>();
   invitesSent: Event[] = [
     {
       _id: '1',
@@ -163,21 +164,21 @@ export class InvitesComponent implements OnInit {
     return firstParticipants.map(participant => participant.displayName).join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
   }
 
-  private getEventActions(invite: Event): ActionModel[] {
+  private getEventActions(event: Event): ActionModel[] {
     return [
       {
         title: 'Marcar evento',
-        action: () => {},
+        action: () => this.openScheduleEvent.next(event),
         icon: PrimeIcons.CALENDAR,
       },
       {
         title: 'Editar convite',
-        action: this.updateInvite.bind(this, invite),
+        action: this.updateInvite.bind(this, event),
         icon: PrimeIcons.PENCIL,
       },
       {
         title: 'Cancelar convite',
-        action: this.deleteInvite.bind(this, invite._id),
+        action: this.deleteInvite.bind(this, event._id),
         icon: PrimeIcons.TRASH,
       },
     ];

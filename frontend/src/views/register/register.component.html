@@ -3,7 +3,7 @@
     <app-user-data [(userData)]="userData"></app-user-data>
     <div class="row">
       <div class="col text-center">
-        <p-button [disabled]="!userData?.valid"
+        <p-button [disabled]="userData?.invalid"
                   styleClass="rounded"
                   (click)="createUser()"
         >

@@ -15,7 +15,7 @@
         >
           Cancelar
         </p-button>
-        <p-button [disabled]="!userData.valid"
+        <p-button [disabled]="userData.invalid"
                   (click)="updateUser()"
         >
           Salvar

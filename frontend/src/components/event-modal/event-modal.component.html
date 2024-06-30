@@ -24,6 +24,7 @@
         <label class="d-block">Período para marcar evento</label>
         <p-calendar [formControlName]="fieldDateRange"
                     [minDate]="today"
+                    [readonlyInput]="true"
                     selectionMode="range"
                     dateFormat="dd/mm/yy"
                     styleClass="w-100"
@@ -62,7 +63,7 @@
     >
       Cancelar
     </p-button>
-    <p-button [disabled]="!eventData.valid"
+    <p-button [disabled]="eventData.invalid"
               (click)="createEvent()"
     >
       Criar evento

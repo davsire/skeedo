@@ -19,6 +19,7 @@
         <p-calendar [formControlName]="fieldAvailableDays"
                     [minDate]="invite?.event.beginDate"
                     [maxDate]="invite?.event.endDate"
+                    [readonlyInput]="true"
                     selectionMode="multiple"
                     dateFormat="dd/mm/yy"
                     styleClass="w-100"
@@ -34,7 +35,7 @@
     >
       Cancelar
     </p-button>
-    <p-button [disabled]="!respondInviteData.valid"
+    <p-button [disabled]="respondInviteData.invalid"
               (click)="respondInvite()"
     >
       Enviar resposta
