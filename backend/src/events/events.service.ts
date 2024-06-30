@@ -1,10 +1,13 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
 import { Event, EventStatus } from 'schemas/event.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { after } from 'node:test';
 
 @Injectable()
 export class EventsService {
@@ -16,19 +19,18 @@ export class EventsService {
       creator: user.sub,
       status: EventStatus.WAITING_RESPONSES,
     }).save();
-
   }
 
   async findAll(token) {
     //return await this.eventModel.find({creator: user.sub});
     const events = await this.eventModel.find().exec();
-    let result = [];
+    const result = [];
     for (let i = 0; i < events.length; i++) {
-      if ( 
-        (events[i].participants.map((x) => x.toString()).indexOf(token.sub) > -1) 
-        || (events[i].creator.toString() == token.sub)
-      )
-        {
+      if (
+        events[i].participants.map((x) => x.toString()).indexOf(token.sub) >
+          -1 ||
+        events[i].creator.toString() == token.sub
+      ) {
         result.push(events[i]);
       }
     }
@@ -42,8 +44,7 @@ export class EventsService {
         throw new UnauthorizedException();
       }
       return event;
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }
@@ -54,14 +55,13 @@ export class EventsService {
       if (event.creator.toString() !== user.sub) {
         throw new UnauthorizedException();
       }
-      
+
       return await this.eventModel.findByIdAndUpdate(
         id,
-        {name: updateEventDto.name},
-        {returnDocument: "after"}
+        { name: updateEventDto.name },
+        { returnDocument: 'after' },
       );
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }
@@ -72,10 +72,9 @@ export class EventsService {
       if (event.creator.toString() !== user.sub) {
         throw new UnauthorizedException();
       }
-      
+
       return await this.eventModel.findByIdAndDelete(id);
-    }
-    catch {
+    } catch {
       throw new NotFoundException();
     }
   }

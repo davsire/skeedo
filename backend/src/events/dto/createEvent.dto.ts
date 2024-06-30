@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsString } from "class-validator";
+import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateEventDto {
   @IsNotEmpty()
@@ -11,5 +11,5 @@ export class CreateEventDto {
 
   @IsNotEmpty()
   @IsDateString()
-  endDate: Date;  
+  endDate: Date;
 }
