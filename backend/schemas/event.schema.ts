@@ -8,15 +8,15 @@ export enum EventStatus {
   EVENT_CLOSED = 'EVENT_CLOSED',
 }
 
-
 @Schema()
 export class Event {
   @Prop({ required: true })
   name: string;
 
   @Prop({
-    required: true, 
-    type: mongoose.Schema.Types.ObjectId, ref: 'User',
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   })
   creator: User;
 
@@ -33,11 +33,10 @@ export class Event {
   status: EventStatus;
 
   @Prop({
-    required: true, 
+    required: true,
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   })
   participants: User[];
-
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
