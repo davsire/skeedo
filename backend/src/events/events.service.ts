@@ -95,6 +95,7 @@ export class EventsService {
         throw new UnauthorizedException();
       }
 
+      await this.invitesService.removeByEvent(event._id.toString());
       return await this.eventModel.findByIdAndDelete(id);
     } catch {
       throw new NotFoundException();

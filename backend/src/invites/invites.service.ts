@@ -97,4 +97,12 @@ export class InvitesService {
       throw new NotFoundException();
     }
   }
+
+  async removeByEvent(eventId: string) {
+    try {
+      await this.inviteModel.deleteMany({ event: eventId });
+    } catch {
+      throw new NotFoundException();
+    }
+  }
 }
