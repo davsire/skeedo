@@ -5,8 +5,9 @@ import { ActionModel } from 'src/models/action.model';
 import { Event } from 'src/models/event.model';
 import { Invite } from 'src/models/invite.model';
 import { User } from 'src/models/user.model';
+import { EventService } from 'src/services/event.service';
+import { InviteService } from 'src/services/invite.service';
 import { NotificationService } from 'src/services/notification.service';
-import { EventStatus } from 'src/shared/constants';
 
 @Component({
   selector: 'app-invites',
@@ -24,125 +25,35 @@ export class InvitesComponent implements OnInit {
 
   openRespondInvite = new Subject<Invite>();
   openScheduleEvent = new Subject<Event>();
-  invitesSent: Event[] = [
-    {
-      _id: '1',
-      name: 'Fazer trabalho de WEB',
-      creator: {
-        displayName: 'Pessoa A'
-      } as User,
-      status: EventStatus.WAITING_RESPONSES,
-      beginDate: new Date('2024-06-01'),
-      endDate: new Date('2024-06-31'),
-      eventDate: null,
-      participants: [
-        {
-          displayName: 'Davi'
-        } as User,
-        {
-          displayName: 'Leonardo'
-        } as User,
-        {
-          displayName: 'Gabriel'
-        } as User,
-      ],
-    },
-    {
-      _id: '2',
-      name: 'ir no mercado',
-      creator: {
-        displayName: 'Pessoa B'
-      } as User,
-      status: EventStatus.WAITING_RESPONSES,
-      beginDate: new Date('2024-07-15'),
-      endDate: new Date('2024-07-18'),
-      eventDate: null,
-      participants: [
-        {
-          displayName: 'Alguém'
-        } as User,
-      ],
-    },
-    {
-      _id: '3',
-      name: 'alguma coisa aí sla',
-      creator: {
-        displayName: 'Pessoa C'
-      } as User,
-      status: EventStatus.WAITING_RESPONSES,
-      beginDate: new Date('2024-06-01'),
-      endDate: new Date('2024-07-31'),
-      eventDate: null,
-      participants: [
-        {
-          displayName: 'Fulano'
-        } as User,
-        {
-          displayName: 'Ciclano'
-        } as User,
-      ],
-    },
-  ]; // @TODO: replace this mock to a call to get invites endpoint
-
-  invitesReceived: Invite[] = [
-    {
-      _id: '1',
-      user: {
-        displayName: 'Pessoa convidada A'
-      } as User,
-      event: {
-        name: 'Sair pra jogar sinuca',
-        beginDate: new Date('2024-06-01'),
-        endDate: new Date('2024-06-31'),
-        creator: {
-          displayName: 'Pessoa A'
-        } as User,
-      } as Event,
-      availableDays: [],
-      responded: false,
-    },
-    {
-      _id: '2',
-      user: {
-        displayName: 'Pessoa convidada B'
-      } as User,
-      event: {
-        name: 'sla ir na bu talvez',
-        beginDate: new Date('2024-07-15'),
-        endDate: new Date('2024-07-18'),
-        creator: {
-          displayName: 'Pessoa B'
-        } as User,
-      } as Event,
-      availableDays: [],
-      responded: false,
-    },
-    {
-      _id: '3',
-      user: {
-        displayName: 'Pessoa convidada C'
-      } as User,
-      event: {
-        name: 'Um date fofo',
-        beginDate: new Date('2024-06-01'),
-        endDate: new Date('2024-06-31'),
-        creator: {
-          displayName: 'Pessoa C'
-        } as User,
-      } as Event,
-      availableDays: [],
-      responded: false,
-    },
-  ]; // @TODO: replace this mock to a call to get invites endpoint
+  invitesSent: Event[];
+  invitesReceived: Invite[];
 
   constructor(
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
+    private eventService: EventService,
+    private inviteService: InviteService,
   ) {}
 
   public ngOnInit(): void {
-    this.invitesSent.forEach(invite => this.mapEventFields(invite));
-    this.invitesReceived.forEach(invite => this.mapInviteFields(invite));
+    this.getInvitesSent();
+    this.getInvitesReceived();
+  }
+
+  public getInvitesSent(): void {
+    this.invitesSent = null;
+    this.eventService.getWaitingResponsesEvents().subscribe((events: Event[]) => {
+      this.invitesSent = events;
+      this.invitesSent.forEach(invite => this.mapEventFields(invite));
+    });
+  }
+
+  public getInvitesReceived(): void {
+    this.invitesReceived = null;
+    this.inviteService.getPendingInvites().subscribe((invites: Invite[]) => {
+      this.invitesReceived = invites;
+      this.invitesReceived.forEach(invite => this.mapInviteFields(invite));
+    });
   }
 
   private mapEventFields(invite: Event) {
@@ -173,12 +84,12 @@ export class InvitesComponent implements OnInit {
       },
       {
         title: 'Editar convite',
-        action: this.updateInvite.bind(this, event),
+        action: this.updateEvent.bind(this, event),
         icon: PrimeIcons.PENCIL,
       },
       {
         title: 'Cancelar convite',
-        action: this.deleteInvite.bind(this, event._id),
+        action: this.confirmDeleteEvent.bind(this, event._id),
         icon: PrimeIcons.TRASH,
       },
     ];
@@ -190,21 +101,50 @@ export class InvitesComponent implements OnInit {
         title: 'Responder convite',
         action: () => this.openRespondInvite.next(invite),
         icon: PrimeIcons.SEND,
+      },
+      {
+        title: 'Recusar convite',
+        action: this.confirmDeclineInvite.bind(this, invite._id),
+        icon: PrimeIcons.TIMES_CIRCLE,
       }
     ];
   }
 
-  private updateInvite(invite: Event): void {
+  private updateEvent(event: Event): void {
     this.notificationService.success('Convite alterado com sucesso!');
   }
 
-  private deleteInvite(inviteId: string): void {
+  private confirmDeleteEvent(eventId: string): void {
     this.confirmationService.confirm({
       header: 'Cancelar convite',
       message: 'Tem certeza que deseja cancelar esse convite?',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
-      accept: () => this.notificationService.success('Convite cancelado com sucesso!'),
+      accept: () => this.deleteEvent(eventId),
+    });
+  }
+
+  private confirmDeclineInvite(inviteId: string): void {
+    this.confirmationService.confirm({
+      header: 'Recusar convite',
+      message: 'Tem certeza que deseja recusar esse convite?',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => this.declineInvite(inviteId),
+    });
+  }
+
+  private deleteEvent(eventId: string) {
+    this.eventService.deleteEvent(eventId).subscribe(() => {
+      this.notificationService.success('Convite cancelado com sucesso!');
+      this.getInvitesSent();
+    });
+  }
+
+  private declineInvite(inviteId: string) {
+    this.inviteService.declineInvite(inviteId).subscribe(() => {
+      this.notificationService.success('Convite recusado com sucesso!');
+      this.getInvitesReceived();
     });
   }
 }

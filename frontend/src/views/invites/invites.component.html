@@ -1,5 +1,5 @@
 <p-card styleClass="p-2">
-  <app-event-modal></app-event-modal>
+  <app-event-modal (eventCreated)="getInvitesSent()"></app-event-modal>
   <p-tabView styleClass="mt-2">
     <p-tabPanel header="Convites recebidos">
       <ng-template pTemplate="header">
@@ -19,7 +19,8 @@
 </p-card>
 
 <ng-template #invitesReceivedList>
-  <app-data-table [items]="invitesReceived"
+  <app-data-table *ngIf="invitesReceived"
+                  [items]="invitesReceived"
                   [tableHeader]="invitesReceivedHeader"
                   [tableContent]="invitesReceivedContent"
                   emptyMessage="Você não possui convites pendentes para responder..."
@@ -75,7 +76,8 @@
 </ng-template>
 
 <ng-template #invitesSentList>
-  <app-data-table [items]="invitesSent"
+  <app-data-table *ngIf="invitesSent"
+                  [items]="invitesSent"
                   [tableHeader]="invitesSentHeader"
                   [tableContent]="invitesSentContent"
                   emptyMessage="Você não possui convites aguardando resposta..."
@@ -134,5 +136,7 @@
   </ng-template>
 </ng-template>
 
-<app-respond-invite [openRespondInvite]="openRespondInvite"></app-respond-invite>
+<app-respond-invite [openRespondInvite]="openRespondInvite"
+                    (inviteResponded)="getInvitesReceived()"
+></app-respond-invite>
 <app-schedule-event [openScheduleEvent]="openScheduleEvent"></app-schedule-event>
