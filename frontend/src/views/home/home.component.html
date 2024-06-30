@@ -1,6 +1,7 @@
 <p-card styleClass="p-2">
   <app-event-modal></app-event-modal>
-  <app-data-table [items]="events"
+  <app-data-table *ngIf="events"
+                  [items]="events"
                   [tableHeader]="header"
                   [tableContent]="content"
                   emptyMessage="Você não possui eventos marcados..."

@@ -6,8 +6,11 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
+import { Event } from 'src/models/event.model';
 import { User } from 'src/models/user.model';
+import { EventService } from 'src/services/event.service';
 import { NotificationService } from 'src/services/notification.service';
+import { SessionService } from 'src/services/session.service';
 import { UserService } from 'src/services/user.service';
 import { CONSTANTS } from 'src/shared/constants';
 
@@ -31,7 +34,9 @@ export class EventModalComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    private sessionService: SessionService,
     private userService: UserService,
+    private eventService: EventService,
   ) {}
 
   public ngOnInit(): void {
@@ -53,14 +58,15 @@ export class EventModalComponent implements OnInit {
   }
 
   public createEvent(): void {
-    console.log(this.eventData.getRawValue()); // @TODO: replace this mock to a call to create event endpoint
-    this.notificationService.success('Evento cadastrado com sucesso!');
-    this.closeModal();
+    this.eventService.createEvent(this.getEventData()).subscribe(() => {
+      this.notificationService.success('Evento cadastrado com sucesso!');
+      this.closeModal();
+    });
   }
 
   private getUsers(): void {
     this.userService.getAllUsers().subscribe((users: User[]) => {
-      this.users = users;
+      this.users = users.filter(user => user._id !== this.sessionService.getUserId());
     });
   }
 
@@ -77,5 +83,14 @@ export class EventModalComponent implements OnInit {
       return null;
     }
     return {notDateRange: true};
+  }
+
+  private getEventData(): Event {
+    return {
+      name: this.eventData.get(this.fieldEventName).value,
+      beginDate: this.eventData.get(this.fieldDateRange).value[0],
+      endDate: this.eventData.get(this.fieldDateRange).value[1],
+      participants: this.eventData.get(this.fieldParticipants).value,
+    };
   }
 }

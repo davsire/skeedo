@@ -3,38 +3,57 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateEventDto } from './dto/createEvent.dto';
-import { UpdateEventDto } from './dto/updateEvent.dto';
 import { Event, EventStatus } from 'schemas/event.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { InvitesService } from 'src/invites/invites.service';
+import { CreateEventDto } from './dto/createEvent.dto';
+import { UpdateEventDto } from './dto/updateEvent.dto';
 
 @Injectable()
 export class EventsService {
-  constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
+  constructor(
+    @InjectModel(Event.name) private eventModel: Model<Event>,
+    private readonly invitesService: InvitesService,
+  ) {}
 
   async create(createEventDto: CreateEventDto, user) {
-    return await new this.eventModel({
+    const event = await new this.eventModel({
       ...createEventDto,
       creator: user.sub,
       status: EventStatus.WAITING_RESPONSES,
     }).save();
+
+    for (const user of event.participants) {
+      this.invitesService.create({
+        event: event,
+        user: user,
+      });
+    }
+
+    return event;
   }
 
-  async findAll(token) {
-    //return await this.eventModel.find({creator: user.sub});
-    const events = await this.eventModel.find().exec();
-    const result = [];
-    for (let i = 0; i < events.length; i++) {
-      if (
-        events[i].participants.map((x) => x.toString()).indexOf(token.sub) >
-          -1 ||
-        events[i].creator.toString() == token.sub
-      ) {
-        result.push(events[i]);
-      }
-    }
-    return result;
+  async findAllClosed(token: any) {
+    return await this.eventModel
+      .find({
+        status: EventStatus.EVENT_CLOSED,
+        $or: [{ participants: token.sub }, { creator: token.sub }],
+      })
+      .populate('creator')
+      .populate('participants')
+      .exec();
+  }
+
+  async findAllWaitingResponses(token: any) {
+    return await this.eventModel
+      .find({
+        status: EventStatus.WAITING_RESPONSES,
+        creator: token.sub,
+      })
+      .populate('creator')
+      .populate('participants')
+      .exec();
   }
 
   async findOne(id: string, user) {

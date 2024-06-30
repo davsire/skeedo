@@ -25,9 +25,15 @@ export class EventsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get()
-  findAll(@Request() req) {
-    return this.eventsService.findAll(req.user);
+  @Get('/closed')
+  findAllClosed(@Request() req) {
+    return this.eventsService.findAllClosed(req.user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/waiting-responses')
+  findAllWaitingResponses(@Request() req) {
+    return this.eventsService.findAllWaitingResponses(req.user);
   }
 
   @UseGuards(AuthGuard)

@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -10,7 +9,6 @@ import {
   Request,
 } from '@nestjs/common';
 import { InvitesService } from './invites.service';
-import { CreateInviteDto } from './dto/createInvite.dto';
 import { UpdateInviteDto } from './dto/updateInvite.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -19,15 +17,9 @@ export class InvitesController {
   constructor(private readonly invitesService: InvitesService) {}
 
   @UseGuards(AuthGuard)
-  @Post()
-  create(@Body() createInviteDto: CreateInviteDto, @Request() req) {
-    return this.invitesService.create(createInviteDto, req.user);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get()
+  @Get('/pending')
   findAll(@Request() req) {
-    return this.invitesService.findAll(req.user);
+    return this.invitesService.findAllPending(req.user);
   }
 
   @UseGuards(AuthGuard)

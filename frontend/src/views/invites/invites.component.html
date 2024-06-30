@@ -19,7 +19,8 @@
 </p-card>
 
 <ng-template #invitesReceivedList>
-  <app-data-table [items]="invitesReceived"
+  <app-data-table *ngIf="invitesReceived"
+                  [items]="invitesReceived"
                   [tableHeader]="invitesReceivedHeader"
                   [tableContent]="invitesReceivedContent"
                   emptyMessage="Você não possui convites pendentes para responder..."
@@ -75,7 +76,8 @@
 </ng-template>
 
 <ng-template #invitesSentList>
-  <app-data-table [items]="invitesSent"
+  <app-data-table *ngIf="invitesSent"
+                  [items]="invitesSent"
                   [tableHeader]="invitesSentHeader"
                   [tableContent]="invitesSentContent"
                   emptyMessage="Você não possui convites aguardando resposta..."

@@ -7,27 +7,15 @@ import {
 import { CreateInviteDto } from './dto/createInvite.dto';
 import { UpdateInviteDto } from './dto/updateInvite.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
-import { User } from 'schemas/user.schema';
+import { Model } from 'mongoose';
 import { Invite } from 'schemas/invite.schema';
-import { Event } from 'schemas/event.schema';
 
 @Injectable()
 export class InvitesService {
-  constructor(
-    @InjectModel(Invite.name) private inviteModel: Model<Invite>,
-    @InjectModel(Event.name) private eventModel: Model<Event>,
-    @InjectModel(User.name) private userModel: Model<User>,
-  ) {}
+  constructor(@InjectModel(Invite.name) private inviteModel: Model<Invite>) {}
 
-  async create(createInviteDto: CreateInviteDto, token) {
+  async create(createInviteDto: CreateInviteDto) {
     try {
-      const event = await this.eventModel.findById(createInviteDto.event);
-      const user = await this.userModel.findById(createInviteDto.user);
-      if (event.creator.toString() !== token.sub) {
-        throw new UnauthorizedException();
-      }
-
       const alreadyExists = await this.inviteModel
         .find({
           user: createInviteDto.user,
@@ -38,8 +26,6 @@ export class InvitesService {
         throw new HttpException('Usuário já convidado para o evento', 400);
       }
 
-      event.participants.push(user);
-      await this.eventModel.findByIdAndUpdate(createInviteDto.event, event);
       return await new this.inviteModel({
         ...createInviteDto,
         responded: false,
@@ -52,11 +38,19 @@ export class InvitesService {
     }
   }
 
-  async findAll(token) {
+  async findAllPending(token) {
     const invites = await this.inviteModel
       .find({
         user: token.sub,
+        responded: false,
       })
+      .populate({
+        path: 'event',
+        populate: {
+          path: 'creator',
+        },
+      })
+      .populate('user')
       .exec();
     return invites;
   }
