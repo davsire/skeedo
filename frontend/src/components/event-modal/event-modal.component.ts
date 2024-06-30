@@ -62,8 +62,8 @@ export class EventModalComponent implements OnInit {
   public createEvent(): void {
     this.eventService.createEvent(this.getEventData()).subscribe(() => {
       this.notificationService.success('Evento cadastrado com sucesso!');
-      this.closeModal();
       this.eventCreated.next();
+      this.closeModal();
     });
   }
 

@@ -47,7 +47,7 @@ export class InvitesComponent implements OnInit {
     });
   }
 
-  private getInvitesReceived(): void {
+  public getInvitesReceived(): void {
     this.invitesReceived = null;
     this.inviteService.getPendingInvites().subscribe((invites: Invite[]) => {
       this.invitesReceived = invites;
@@ -74,7 +74,7 @@ export class InvitesComponent implements OnInit {
     return firstParticipants.map(participant => participant.displayName).join(', ') + (lastParticipantsCount ? ` e mais ${lastParticipantsCount}` : '');
   }
 
-  private getEventActions(invite: Event): ActionModel[] {
+  private getEventActions(event: Event): ActionModel[] {
     return [
       {
         title: 'Marcar evento',
@@ -83,12 +83,12 @@ export class InvitesComponent implements OnInit {
       },
       {
         title: 'Editar convite',
-        action: this.updateInvite.bind(this, invite),
+        action: this.updateEvent.bind(this, event),
         icon: PrimeIcons.PENCIL,
       },
       {
         title: 'Cancelar convite',
-        action: this.confirmDeleteEvent.bind(this, invite._id),
+        action: this.confirmDeleteEvent.bind(this, event._id),
         icon: PrimeIcons.TRASH,
       },
     ];
@@ -100,11 +100,16 @@ export class InvitesComponent implements OnInit {
         title: 'Responder convite',
         action: () => this.openRespondInvite.next(invite),
         icon: PrimeIcons.SEND,
+      },
+      {
+        title: 'Recusar convite',
+        action: this.confirmDeclineInvite.bind(this, invite._id),
+        icon: PrimeIcons.TIMES_CIRCLE,
       }
     ];
   }
 
-  private updateInvite(invite: Event): void {
+  private updateEvent(event: Event): void {
     this.notificationService.success('Convite alterado com sucesso!');
   }
 
@@ -118,10 +123,27 @@ export class InvitesComponent implements OnInit {
     });
   }
 
+  private confirmDeclineInvite(inviteId: string): void {
+    this.confirmationService.confirm({
+      header: 'Recusar convite',
+      message: 'Tem certeza que deseja recusar esse convite?',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => this.declineInvite(inviteId),
+    });
+  }
+
   private deleteEvent(eventId: string) {
     this.eventService.deleteEvent(eventId).subscribe(() => {
       this.notificationService.success('Convite cancelado com sucesso!');
       this.getInvitesSent();
+    });
+  }
+
+  private declineInvite(inviteId: string) {
+    this.inviteService.declineInvite(inviteId).subscribe(() => {
+      this.notificationService.success('Convite recusado com sucesso!');
+      this.getInvitesReceived();
     });
   }
 }

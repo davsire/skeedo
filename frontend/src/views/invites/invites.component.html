@@ -136,4 +136,6 @@
   </ng-template>
 </ng-template>
 
-<app-respond-invite [openRespondInvite]="openRespondInvite"></app-respond-invite>
+<app-respond-invite [openRespondInvite]="openRespondInvite"
+                    (inviteResponded)="getInvitesReceived()"
+></app-respond-invite>
