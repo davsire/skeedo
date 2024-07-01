@@ -4,7 +4,15 @@
 >
   <app-user-data [(userData)]="userData" [disableFields]="!isEdition" [isEdition]="true"></app-user-data>
   <ng-template pTemplate="footer">
-    <footer class="d-flex justify-content-end">
+    <footer class="d-flex"
+            [class]="isEdition ? 'justify-content-end' : 'justify-content-between'"
+    >
+      <p-button *ngIf="!isEdition"
+                severity="danger"
+                (click)="confirmDeleteUser()"
+      >
+        Excluir conta
+      </p-button>
       <p-button *ngIf="!isEdition; else edicao" (click)="toggleEdition(true)">
         Editar
       </p-button>

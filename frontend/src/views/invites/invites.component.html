@@ -137,6 +137,9 @@
 </ng-template>
 
 <app-respond-invite [openRespondInvite]="openRespondInvite"
-                    (inviteResponded)="getInvitesReceived()"
+(inviteResponded)="getInvitesReceived()"
 ></app-respond-invite>
+<app-update-event [openUpdateEvent]="openUpdateEventDialog"
+(eventUpdated)="getInvitesSent()"
+></app-update-event>
 <app-schedule-event [openScheduleEvent]="openScheduleEvent"></app-schedule-event>

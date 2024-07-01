@@ -26,7 +26,11 @@ export class EventService {
     return this.apiService.post<Event>(this.pathBase, eventData);
   }
 
-  public deleteEvent(eventId): Observable<void> {
+  public updateEvent(eventId: string, eventData: Event): Observable<void> {
+    return this.apiService.patch<void>(this.pathBase + '/' + eventId, eventData);
+  }
+
+  public deleteEvent(eventId: string): Observable<void> {
     return this.apiService.delete<void>(this.pathBase + '/' + eventId);
   }
 }
