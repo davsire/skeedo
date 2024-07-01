@@ -63,7 +63,8 @@ export class AuthService {
 
     // create user in db
     const user = await new this.userModel({
-      ...userSignUpDto,
+      username: userSignUpDto.username,
+      displayName: userSignUpDto.displayName,
     }).save();
 
     await new this.passwordModel({
