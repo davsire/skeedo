@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
+import { Subject } from 'rxjs';
 import { ActionModel } from 'src/models/action.model';
 import { Event } from 'src/models/event.model';
 import { User } from 'src/models/user.model';
 import { EventService } from 'src/services/event.service';
 import { NotificationService } from 'src/services/notification.service';
-import { Subject } from 'rxjs';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
+    private sessionService: SessionService,
     private eventService: EventService,
   ) {}
 
@@ -57,6 +59,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getActions(event: Event): ActionModel[] {
+    if (event.creator._id !== this.sessionService.getUserId()) return null;
     return [
       {
         title: 'Editar evento',

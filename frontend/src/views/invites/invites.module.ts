@@ -7,6 +7,7 @@ import { DataTableModule } from 'src/components/data-table/data-table.module';
 import { EventModalModule } from 'src/components/event-modal/event-modal.module';
 import { ActionMenuModule } from 'src/components/action-menu/action-menu.module';
 import { RespondInviteModule } from 'src/components/respond-invite/respond-invite.module';
+import { ScheduleEventModule } from 'src/components/schedule-event/schedule-event.module';
 import { UpdateEventModule } from 'src/components/update-event/update-event.module';
 import { InvitesComponent } from './invites.component';
 
@@ -23,6 +24,7 @@ import { InvitesComponent } from './invites.component';
     EventModalModule,
     ActionMenuModule,
     RespondInviteModule,
+    ScheduleEventModule,
     UpdateEventModule,
   ]
 })

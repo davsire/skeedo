@@ -1,5 +1,6 @@
 export const CONSTANTS = {
   FIELD_EVENT_NAME: 'eventName',
+  FIELD_EVENT_DATE: 'eventDate',
   FIELD_DATE_RANGE: 'dateRange',
   FIELD_PARTICIPANTS: 'participants',
   FIELD_USER_NAME: 'name',

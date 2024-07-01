@@ -28,7 +28,9 @@
         </span>
       </td>
       <td class="text-end">
-        <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+        <app-action-menu *ngIf="item[actionsField]"
+                         [menuActions]="item[actionsField]"
+        ></app-action-menu>
       </td>
     </tr>
 
@@ -52,7 +54,9 @@
             </div>
           </div>
           <div class="col-3 text-end">
-            <app-action-menu [menuActions]="item[actionsField]"></app-action-menu>
+            <app-action-menu *ngIf="item[actionsField]"
+                             [menuActions]="item[actionsField]"
+            ></app-action-menu>
           </div>
         </div>
       </td>

@@ -24,6 +24,7 @@ export class InvitesComponent implements OnInit {
   readonly actionsField = 'actions';
 
   openRespondInvite = new Subject<Invite>();
+  openScheduleEvent = new Subject<Event>();
   openUpdateEventDialog = new Subject<Event>();
   invitesSent: Event[];
   invitesReceived: Invite[];
@@ -79,7 +80,7 @@ export class InvitesComponent implements OnInit {
     return [
       {
         title: 'Marcar evento',
-        action: () => {},
+        action: () => this.openScheduleEvent.next(event),
         icon: PrimeIcons.CALENDAR,
       },
       {
