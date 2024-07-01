@@ -103,31 +103,35 @@ export class EventsService {
   }
 
   async dateOptions(id: string, token) {
-    try {
-      const event = await this.eventModel.findById(id);
-      if (event.creator.toString() !== token.sub) {
-        throw new UnauthorizedException();
-      }
+    const event = await this.eventModel.findById(id);
+    if (event.creator.toString() !== token.sub) {
+      throw new UnauthorizedException();
+    }
 
+    try {
       return this.processDates(id, event);
-      
     } catch {
       throw new NotFoundException();
     }
   }
 
-  async settleDate(id:string, settleEventDto: SettleEventDto, token) {
+  async settleDate(id: string, settleEventDto: SettleEventDto, token) {
+    const event = await this.eventModel.findById(id);
+    if (event.creator.toString() !== token.sub) {
+      throw new UnauthorizedException();
+    }
+
     try {
-      const event = await this.eventModel.findById(id);
-      if (event.creator.toString() !== token.sub) {
-        throw new UnauthorizedException();
-      }
-
-      return this.eventModel.findByIdAndUpdate(id, {
-        eventDate: settleEventDto.eventDate,
-        status: EventStatus.EVENT_CLOSED
-      }, {returnDocument: 'after'}).exec()
-
+      return this.eventModel
+        .findByIdAndUpdate(
+          id,
+          {
+            eventDate: settleEventDto.eventDate,
+            status: EventStatus.EVENT_CLOSED,
+          },
+          { returnDocument: 'after' },
+        )
+        .exec();
     } catch {
       throw new NotFoundException();
     }
@@ -136,28 +140,45 @@ export class EventsService {
   async processDates(id: string, event: Event) {
     const from = event.beginDate;
     const to = event.endDate;
-    const totalDays = (to.getTime() - from.getTime())/24/60/60/1000;
+    const totalDays = (to.getTime() - from.getTime()) / 24 / 60 / 60 / 1000;
+    const date = from;
     let result = [];
-    let date = from;
+    let maxCountBestDate = 0;
+
     for (let i = 0; i <= totalDays; i++) {
       result.push({
-        'date': date.toISOString().slice(0,10),
-        'available': [],
-      })
+        date: date.toISOString().slice(0, 10),
+        available: [],
+      });
       date.setDate(date.getDate() + 1);
     }
-    
-    const invites = await this.inviteModel.find({
-      event: id,
-      responded: true,
-    }).populate('user').exec()
 
-    for (let i in invites) {
-      for (let j in invites[i].availableDays) {
-        let idx = result.findIndex(x => x.date == invites[i].availableDays[j]);
-        result[idx].available.push(invites[i].user)
+    const invites = await this.inviteModel
+      .find({
+        event: id,
+        responded: true,
+      })
+      .populate('user')
+      .exec();
+
+    for (const invite of invites) {
+      for (const day of invite.availableDays) {
+        const idx = result.findIndex(
+          (x) => x.date === new Date(day).toISOString().slice(0, 10),
+        );
+        result[idx].available.push(invite.user);
+        maxCountBestDate = Math.max(
+          maxCountBestDate,
+          result[idx].available.length,
+        );
       }
     }
-    return result;
+
+    result = result.filter(
+      (date) =>
+        date.available.length && date.available.length >= maxCountBestDate - 1,
+    );
+
+    return { maxCountBestDate, dates: result };
   }
 }

@@ -1,8 +1,19 @@
-import { Component, DestroyRef, Input, ViewEncapsulation, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { EventBestDates } from 'src/models/event-best-dates.model';
 import { Event } from 'src/models/event.model';
+import { User } from 'src/models/user.model';
+import { EventService } from 'src/services/event.service';
 import { NotificationService } from 'src/services/notification.service';
 import { CONSTANTS } from 'src/shared/constants';
 
@@ -15,6 +26,7 @@ import { CONSTANTS } from 'src/shared/constants';
 export class ScheduleEventComponent {
 
   @Input() openScheduleEvent: Subject<Event>;
+  @Output() scheduledEvent = new EventEmitter<void>();
 
   readonly fieldEventDate = CONSTANTS.FIELD_EVENT_DATE;
 
@@ -22,40 +34,23 @@ export class ScheduleEventComponent {
   modalVisible = false;
   event: Event;
   scheduleEventData: FormGroup;
-  bestDays = [
-    {
-      day: new Date('2024-06-02'),
-      participants: ['Davi', 'Leo', 'Gab'],
-      best: true,
-    },
-    {
-      day: new Date('2024-06-14'),
-      participants: ['Fulano', 'Ciclano'],
-      best: false,
-    },
-    {
-      day: new Date('2024-06-30'),
-      participants: ['ABC', 'DEF', 'GHI'],
-      best: true,
-    },
-  ];
-  bestDaysMap: Map<string, string[]> = new Map();
+  bestDates: EventBestDates;
+  bestDatesMap: Map<string, User[]> = new Map();
 
   constructor(
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
+    private eventService: EventService,
   ) {}
-
-  public isBestDay(day): boolean {
-    return this.bestDaysMap.has(`${day.year}-${day.month}-${day.day}`);
-  }
 
   public ngOnInit(): void {
     this.initScheduleEventData();
-    this.mapBestDays();
     this.openScheduleEvent.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((event) => {
       this.event = event;
+      this.event.beginDate = new Date(this.event.beginDate);
+      this.event.endDate = new Date(this.event.endDate);
       this.modalVisible = true;
+      this.getEventBestDates();
     });
   }
 
@@ -69,12 +64,44 @@ export class ScheduleEventComponent {
   }
 
   public scheduleEvent(): void {
-    this.notificationService.success('Evento marcado com sucesso! Aproveite e se divirta! :)');
-    this.closeModal();
+    this.eventService.scheduleEvent(this.event._id, this.getScheduleEventData()).subscribe(() => {
+      this.notificationService.success('Evento marcado com sucesso! Aproveite e se divirta! :)');
+      this.scheduledEvent.next();
+      this.closeModal();
+    });
   }
 
-  public getParticipants(day): string {
-    return this.bestDaysMap.get(`${day.year}-${day.month}-${day.day}`)?.join(', ');
+  public isBestDate(date): boolean {
+    return this.bestDatesMap.has(this.formatDate(date));
+  }
+
+  public getBestDateClass(date): string {
+    if (!this.isBestDate(date)) return '';
+    return this.bestDatesMap.get(this.formatDate(date)).length === this.bestDates.maxCountBestDate ? 'best-date' : 'recommended-date';
+  }
+
+  public getParticipants(date): string {
+    if (!this.isBestDate(date)) return null;
+    return this.bestDatesMap.get(this.formatDate(date))
+      .map((participant) => participant.displayName)
+      .join(', ');
+  }
+
+  private getEventBestDates(): void {
+    this.eventService.getEventBestDates(this.event._id).subscribe((bestDates: EventBestDates) => {
+      this.bestDates = bestDates;
+      this.mapBestDates();
+    });
+  }
+
+  private mapBestDates(): void {
+    this.bestDates.dates.forEach((date) => {
+      this.bestDatesMap.set(date.date, date.available);
+    });
+  }
+
+  private formatDate(date): string {
+    return new Date(date.year, date.month, date.day).toISOString().slice(0, 10);
   }
 
   private initScheduleEventData(): void {
@@ -83,10 +110,9 @@ export class ScheduleEventComponent {
     });
   }
 
-  private mapBestDays(): void {
-    this.bestDays.forEach((day) => {
-      const formattedDate = `${day.day.getFullYear()}-${day.day.getMonth()}-${day.day.getDate()}`;
-      this.bestDaysMap.set(formattedDate, day.participants);
-    });
+  private getScheduleEventData(): Event {
+    return {
+      eventDate: this.scheduleEventData.get(this.fieldEventDate).value,
+    } as Event;
   }
 }

@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Event } from 'src/models/event.model';
 import { Observable } from 'rxjs';
+import { Event } from 'src/models/event.model';
+import { EventBestDates } from 'src/models/event-best-dates.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
+  readonly eventId = '{eventId}';
   readonly pathBase = 'events';
   readonly pathClosedEvents = this.pathBase + '/closed';
   readonly pathWaitingResponseEvents = this.pathBase + '/waiting-responses';
+  readonly pathEventSettle = this.pathBase + `/${this.eventId}/settle`;
 
   constructor(private apiService: ApiService) {}
 
@@ -32,5 +35,13 @@ export class EventService {
 
   public deleteEvent(eventId: string): Observable<void> {
     return this.apiService.delete<void>(this.pathBase + '/' + eventId);
+  }
+
+  public getEventBestDates(eventId: string): Observable<EventBestDates> {
+    return this.apiService.get<EventBestDates>(this.pathEventSettle.replace(this.eventId, eventId));
+  }
+
+  public scheduleEvent(eventId: string, eventData: Event): Observable<void> {
+    return this.apiService.patch(this.pathEventSettle.replace(this.eventId, eventId), eventData);
   }
 }

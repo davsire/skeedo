@@ -48,7 +48,7 @@ export class EventsController {
   update(
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
-    @Request() req
+    @Request() req,
   ) {
     return this.eventsService.update(id, updateEventDto, req.user);
   }
@@ -70,7 +70,7 @@ export class EventsController {
   settleDate(
     @Param('id') id: string,
     @Body() settleEventDto: SettleEventDto,
-    @Request() req
+    @Request() req,
   ) {
     return this.eventsService.settleDate(id, settleEventDto, req.user);
   }

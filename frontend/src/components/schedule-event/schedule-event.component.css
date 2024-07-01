@@ -1,17 +1,23 @@
-span:has(> span.best-day),
-.best-day {
-  background-color: var(--primary-color);
+span:has(> span.best-date),
+.best-date {
+  background-color: #046B3C;
   color: white;
 }
 
-span.p-highlight:has(> span.best-day),
-span.p-highlight .best-day {
-  background-color: #B5B7FB;
+span:has(> span.recommended-date),
+.recommended-date {
+  background-color: #DBB800;
+  color: white;
+}
+
+span.p-highlight,
+span.p-highlight .best-date,
+span.p-highlight .recommended-date {
+  background-color: #B5B7FB !important;
 }
 
 .color-subtitle {
   display: inline-block;
-  background-color: var(--primary-color);
   width: 10px;
   height: 10px;
   border-radius: 50%;

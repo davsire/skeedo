@@ -18,8 +18,8 @@
                     appendTo="body"
         >
           <ng-template pTemplate="date" let-date>
-            <span [ngClass]="{'best-day': isBestDay(date)}"
-                  [tooltipDisabled]="!isBestDay(date)"
+            <span [class]="getBestDateClass(date)"
+                  [tooltipDisabled]="!isBestDate(date)"
                   [pTooltip]="getParticipants(date)"
                   tooltipPosition="top"
             >
@@ -28,8 +28,12 @@
           </ng-template>
           <ng-template pTemplate="footer">
             <div class="p-2 fw-semibold">
-              <div class="color-subtitle me-1"></div>
+              <div class="color-subtitle best-date me-1"></div>
               Melhores dias para marcar o evento
+            </div>
+            <div class="p-2">
+              <div class="color-subtitle recommended-date me-1"></div>
+              Dias recomendados para marcar o evento
             </div>
           </ng-template>
         </p-calendar>
