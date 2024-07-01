@@ -13,6 +13,7 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { SettleEventDto } from './dto/settleEvent.dto';
 
 @Controller('events')
 export class EventsController {
@@ -47,9 +48,8 @@ export class EventsController {
   update(
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
-    @Request() req,
+    @Request() req
   ) {
-    console.log(updateEventDto);
     return this.eventsService.update(id, updateEventDto, req.user);
   }
 
@@ -57,5 +57,21 @@ export class EventsController {
   @Delete(':id')
   remove(@Param('id') id: string, @Request() req) {
     return this.eventsService.remove(id, req.user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id/settle')
+  bestDates(@Param('id') id: string, @Request() req) {
+    return this.eventsService.dateOptions(id, req.user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id/settle')
+  settleDate(
+    @Param('id') id: string,
+    @Body() settleEventDto: SettleEventDto,
+    @Request() req
+  ) {
+    return this.eventsService.settleDate(id, settleEventDto, req.user);
   }
 }
