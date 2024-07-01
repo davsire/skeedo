@@ -11,11 +11,13 @@ import { UserSignUpDto } from 'src/users/dto/userSignUp.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Password, PasswordDocument } from 'schemas/password.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(Password.name) private readonly passwordModel: Model<PasswordDocument>,
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
   ) {}
@@ -32,9 +34,11 @@ export class AuthService {
     }
 
     // authenticate
+    const password = await this.passwordModel.findOne({user: user.id});
+
     const isMatch = await bcrypt.compare(
       userSignInDto.password,
-      user.passwordHash,
+      password.hash,
     );
     if (!isMatch) {
       throw new UnauthorizedException();
@@ -55,13 +59,16 @@ export class AuthService {
     await this.userService.checkUserExists(userSignUpDto.username);
 
     // hash password
-    const passwordHash = await bcrypt.hash(userSignUpDto.password, 2);
+    const hash = await bcrypt.hash(userSignUpDto.password, 2);
 
     // create user in db
     const user = await new this.userModel({
       ...userSignUpDto,
-      passwordHash,
-      createdAt: new Date(),
+    }).save();
+
+    await new this.passwordModel({
+      user: user._id,
+      hash
     }).save();
 
     // issue token
