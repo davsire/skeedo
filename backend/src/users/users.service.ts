@@ -10,10 +10,14 @@ import * as bcrypt from 'bcrypt';
 import { User } from 'schemas/user.schema';
 import { UserSignUpDto } from 'src/users/dto/userSignUp.dto';
 import { UserUpdateDto } from './dto/userUpdate.dto';
+import { Password } from 'schemas/password.schema';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Password.name) private passwordModel: Model<Password>
+  ) {}
 
   async create(createUserDto: UserSignUpDto) {
     // user creation is handled by auth module
@@ -48,7 +52,12 @@ export class UsersService {
     }
 
     if (updateUserDto.password) {
-      userUpdate['passwordHash'] = await bcrypt.hash(updateUserDto.password, 2);
+      const hash = await bcrypt.hash(updateUserDto.password, 2);
+      this.passwordModel.findOneAndUpdate({
+        user: id
+      },{
+        hash,
+      }).exec()
     }
 
     try {
