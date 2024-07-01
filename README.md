@@ -3,9 +3,9 @@
 
 ## Integrantes
 
-- Davi Vitorino da Silva
-- Leonardo Augusto
-- Gabriel Lindner Alvim
+- Davi Vitorino da Silva (23100760)
+- Leonardo Augusto 
+- Gabriel Lindner Alvim (23100763
 
 ## Descrição
 
