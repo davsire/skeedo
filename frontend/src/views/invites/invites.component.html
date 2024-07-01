@@ -139,3 +139,6 @@
 <app-respond-invite [openRespondInvite]="openRespondInvite"
                     (inviteResponded)="getInvitesReceived()"
 ></app-respond-invite>
+<app-update-event [openUpdateEvent]="openUpdateEventDialog"
+                  (eventUpdated)="getInvitesSent()"
+></app-update-event>

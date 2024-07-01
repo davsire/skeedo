@@ -24,6 +24,7 @@ export class InvitesComponent implements OnInit {
   readonly actionsField = 'actions';
 
   openRespondInvite = new Subject<Invite>();
+  openUpdateEventDialog = new Subject<Event>();
   invitesSent: Event[];
   invitesReceived: Invite[];
 
@@ -83,7 +84,7 @@ export class InvitesComponent implements OnInit {
       },
       {
         title: 'Editar convite',
-        action: this.updateEvent.bind(this, event),
+        action: () => this.openUpdateEventDialog.next(event),
         icon: PrimeIcons.PENCIL,
       },
       {
@@ -107,10 +108,6 @@ export class InvitesComponent implements OnInit {
         icon: PrimeIcons.TIMES_CIRCLE,
       }
     ];
-  }
-
-  private updateEvent(event: Event): void {
-    this.notificationService.success('Convite alterado com sucesso!');
   }
 
   private confirmDeleteEvent(eventId: string): void {

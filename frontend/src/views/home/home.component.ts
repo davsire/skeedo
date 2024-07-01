@@ -5,6 +5,7 @@ import { Event } from 'src/models/event.model';
 import { User } from 'src/models/user.model';
 import { EventService } from 'src/services/event.service';
 import { NotificationService } from 'src/services/notification.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   readonly actionsField = 'actions';
 
   events: Event[];
+  openUpdateEventDialog = new Subject<Event>();
 
   constructor(
     private notificationService: NotificationService,
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
     this.getEvents();
   }
 
-  private getEvents(): void {
+  public getEvents(): void {
     this.events = null;
     this.eventService.getClosedEvents().subscribe((events: Event[]) => {
       this.events = events;
@@ -58,7 +60,7 @@ export class HomeComponent implements OnInit {
     return [
       {
         title: 'Editar evento',
-        action: this.updateEvent.bind(this, event),
+        action: () => this.openUpdateEventDialog.next(event),
         icon: PrimeIcons.PENCIL,
       },
       {
@@ -67,10 +69,6 @@ export class HomeComponent implements OnInit {
         icon: PrimeIcons.TRASH,
       },
     ];
-  }
-
-  private updateEvent(event: Event): void {
-    this.notificationService.success('Evento alterado com sucesso!');
   }
 
   private confirmDeleteEvent(eventId: string): void {
