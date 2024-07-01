@@ -1,10 +1,14 @@
 import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { User } from 'src/models/user.model';
+import { AuthenticationService } from 'src/services/authentication.service';
 import { NotificationService } from 'src/services/notification.service';
 import { SessionService } from 'src/services/session.service';
 import { UserService } from 'src/services/user.service';
 import { CONSTANTS } from 'src/shared/constants';
+import { ROUTES } from 'src/shared/routes';
 
 @Component({
   selector: 'app-profile',
@@ -18,9 +22,12 @@ export class ProfileComponent implements AfterViewInit {
   isEdition = false;
 
   constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
     private userService: UserService,
     private sessionService: SessionService,
+    private confirmationService: ConfirmationService,
   ) {}
 
   public ngAfterViewInit(): void {
@@ -44,6 +51,16 @@ export class ProfileComponent implements AfterViewInit {
     });
   }
 
+  public confirmDeleteUser(): void {
+    this.confirmationService.confirm({
+      header: 'Excluir conta',
+      message: 'Tem certeza que deseja excluir sua conta? :(',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => this.deleteUser(),
+    });
+  }
+
   private getUserData(): void {
     this.userService.getUserById(this.sessionService.getUserId()).subscribe((user: User) => {
       this.userData.get(CONSTANTS.FIELD_USER_NAME).setValue(user.displayName);
@@ -57,5 +74,13 @@ export class ProfileComponent implements AfterViewInit {
       username: this.userData.get(CONSTANTS.FIELD_USER_USERNAME).value,
       password: this.userData.get(CONSTANTS.FIELD_USER_PASSWORD).value,
     };
+  }
+
+  private deleteUser(): void {
+    this.userService.deleteUserById(this.sessionService.getUserId()).subscribe(() => {
+      this.notificationService.success('Conta excluída com sucesso!');
+      this.authenticationService.signOut();
+      this.router.navigate([ROUTES.login.path]);
+    });
   }
 }

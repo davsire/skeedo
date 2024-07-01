@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 })
 export class EventService {
 
-
   readonly pathBase = 'events';
   readonly pathClosedEvents = this.pathBase + '/closed';
   readonly pathWaitingResponseEvents = this.pathBase + '/waiting-responses';
@@ -27,7 +26,11 @@ export class EventService {
     return this.apiService.post<Event>(this.pathBase, eventData);
   }
 
-  public deleteEvent(eventId): Observable<void> {
+  public updateEvent(eventId: string, eventData: Event): Observable<void> {
+    return this.apiService.patch<void>(this.pathBase + '/' + eventId, eventData);
+  }
+
+  public deleteEvent(eventId: string): Observable<void> {
     return this.apiService.delete<void>(this.pathBase + '/' + eventId);
   }
 }

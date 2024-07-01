@@ -4,7 +4,18 @@
           [style]="{ width: 'min(600px, 80vw)' }"
           (onHide)="clearUpdateEventData()"
 >
-  <ng-container [formGroup]="updateEventData">
+  <ng-container *ngIf="updateEventData"
+                [formGroup]="updateEventData"
+  >
+    <div class="row mb-3">
+      <div class="col-12">
+        <label class="d-block">Nome do evento</label>
+        <input [formControlName]="fieldEventName"
+                type="text"
+                pInputText
+                class="w-100">
+      </div>
+    </div>
   </ng-container>
   <ng-template pTemplate="footer">
     <p-button severity="danger"

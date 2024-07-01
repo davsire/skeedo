@@ -23,4 +23,8 @@ export class UserService {
   public updateUserById(userId: string, userData: User): Observable<User> {
     return this.apiService.patch<User>(this.pathBase + '/' + userId, userData);
   }
+
+  public deleteUserById(userId: string): Observable<void> {
+    return this.apiService.delete<void>(this.pathBase + '/' + userId);
+  }
 }

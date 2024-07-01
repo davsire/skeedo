@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   readonly actionsField = 'actions';
 
   events: Event[];
-  openUpdatedEventDialog = new Subject<Event>();
+  openUpdateEventDialog = new Subject<Event>();
 
   constructor(
     private notificationService: NotificationService,
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     this.getEvents();
   }
 
-  private getEvents(): void {
+  public getEvents(): void {
     this.events = null;
     this.eventService.getClosedEvents().subscribe((events: Event[]) => {
       this.events = events;
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
     return [
       {
         title: 'Editar evento',
-        action: () => this.openUpdatedEventDialog.next(event),
+        action: () => this.openUpdateEventDialog.next(event),
         icon: PrimeIcons.PENCIL,
       },
       {
