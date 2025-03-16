@@ -11,7 +11,10 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_HOST),
+    MongooseModule.forRoot(process.env['MONGO_HOST'], {
+      user: process.env['MONGO_USERNAME'],
+      pass: process.env['MONGO_PASSWORD'],
+    }),
     AuthModule,
     UsersModule,
     EventsModule,

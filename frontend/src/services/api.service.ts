@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SessionService } from './session.service';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  private static readonly BASE_URL = 'http://localhost:3000/';
+  private static readonly BASE_URL = environment.SERVICE_HOST;
   private headers: HttpHeaders = new HttpHeaders({
     Accept: 'application/json',
     'Content-Type': 'application/json',

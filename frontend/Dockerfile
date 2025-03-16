@@ -1,13 +1,25 @@
-FROM node:23.10.0-alpine3.21
+FROM node:alpine AS build
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 RUN npm i
 
 COPY . .
 
-EXPOSE 4200
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx:alpine
+
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY nginx.config /etc/nginx/nginx.conf
+COPY --from=build /app/dist/skeedo-app /usr/share/nginx/html
+
+RUN echo "mainFile=\"\$(ls /usr/share/nginx/html/main*.js)\" && \
+    envsubst '\$SERVICE_HOST' < \${mainFile} > main.tmp && \
+    mv main.tmp \${mainFile} && \
+    nginx -g 'daemon off;'" > run.sh
+
+CMD ["sh", "run.sh"]

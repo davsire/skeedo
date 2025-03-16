@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mongo_net
+    env_file:
+      - ./.env
+  service:
+    build: ./backend/
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    networks:
+      - mongo_net
+      - service_net
+    env_file:
+      - ./.env
+  app:
+    build: ./frontend/
+    depends_on:
+      - service
+    ports:
+      - 4200:80
+    networks:
+      - service_net
+    env_file:
+      - ./.env
+
+networks:
+  mongo_net:
+    driver: bridge
+  service_net:
+    driver: bridge
+
+volumes:
+  mongo_data:
