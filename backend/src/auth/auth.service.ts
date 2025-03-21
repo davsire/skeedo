@@ -17,7 +17,8 @@ import { Password, PasswordDocument } from 'schemas/password.schema';
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    @InjectModel(Password.name) private readonly passwordModel: Model<PasswordDocument>,
+    @InjectModel(Password.name)
+    private readonly passwordModel: Model<PasswordDocument>,
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
   ) {}
@@ -34,12 +35,9 @@ export class AuthService {
     }
 
     // authenticate
-    const password = await this.passwordModel.findOne({user: user.id});
+    const password = await this.passwordModel.findOne({ user: user.id });
 
-    const isMatch = await bcrypt.compare(
-      userSignInDto.password,
-      password.hash,
-    );
+    const isMatch = await bcrypt.compare(userSignInDto.password, password.hash);
     if (!isMatch) {
       throw new UnauthorizedException();
     }
@@ -69,7 +67,7 @@ export class AuthService {
 
     await new this.passwordModel({
       user: user._id,
-      hash
+      hash,
     }).save();
 
     // issue token

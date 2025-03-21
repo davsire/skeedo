@@ -14,7 +14,7 @@ FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY nginx.config /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist/skeedo-app /usr/share/nginx/html
 
 RUN echo "mainFile=\"\$(ls /usr/share/nginx/html/main*.js)\" && \
